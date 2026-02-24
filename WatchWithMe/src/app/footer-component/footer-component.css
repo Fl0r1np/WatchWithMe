@@ -1,0 +1,84 @@
+/* ===========================
+   Footer Styles
+   =========================== */
+.main-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 5rem;
+  background-color: var(--bg-surface);
+  border-top: 1px solid var(--border-color);
+  margin-top: 5rem; /* Push it down from the content above */
+  font-size: 0.95rem; /* Slightly smaller text for the footer */
+}
+
+/* ===========================
+  LEFT: CONTACT INFO
+   =========================== */
+.main-footer-contact {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.contact-label {
+  color: var(--text-muted);
+}
+
+.contact-email {
+  color: var(--text-main);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.contact-email:hover {
+  color: var(--primary-purple); /* Hover effect matching the theme */
+}
+
+/* ===========================
+   CENTER: COPYRIGHT
+   =========================== */
+.main-footer-copyright {
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ===========================
+   RIGHT: SOCIALS
+   =========================== */
+.main-footer-socials {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.socials-label {
+  color: var(--text-muted);
+}
+
+.socials-icons {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--bg-hover); /* Subtle background for icons */
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.social-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.social-link:hover {
+  background-color: var(--primary-purple);
+  transform: translateY(-3px); /* Lift up slightly on hover */
+}

@@ -1,0 +1,43 @@
+/* =========================================
+   1. GLOBAL VARIABLES (CSS VARS)
+   ========================================= */
+:root {
+  /* Dark & Purple Theme */
+  --bg-main: #13131a;         
+  --bg-surface: #1f1f2e;      
+  --bg-hover: #2a2a3d;        
+  
+  --primary-purple: #8b5cf6;  
+  --primary-hover: #7c3aed;   
+  
+  --text-main: #ffffff;       
+  --text-muted: #a1a1aa;      
+  
+  --border-color: #2d2d3f;    
+  --shadow-dark: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* =========================================
+   2. CSS RESET
+   ========================================= */
+*, *::before, *::after {
+  box-sizing: border-box; 
+  margin: 0;
+  padding: 0;
+}
+
+/* =========================================
+   3. GLOBAL STYLES
+   ========================================= */
+body {
+  font-family: 'SN Pro', sans-serif; 
+  background-color: var(--bg-main);  
+  color: var(--text-main);          
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh; 
+}
+
+button, input, textarea, select {
+  font-family: inherit; 
+}
