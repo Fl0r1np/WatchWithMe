@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header-component',
-  imports: [],
+  imports: [RouterLink],
   template: `
     <header class="main-header">
       
@@ -42,7 +43,7 @@ import { Component } from '@angular/core';
         }
         @else{
 
-          <button class="login-button">Login</button>
+          <a routerLink="/login" class="login-button">Login</a>
 
         }
 

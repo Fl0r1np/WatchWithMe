@@ -82,3 +82,25 @@
   background-color: var(--primary-purple);
   transform: translateY(-3px); /* Lift up slightly on hover */
 }
+
+/* ===========================
+   RESPONSIVE DESIGN
+   =========================== */
+@media (max-width: 768px) {
+  .main-footer {
+    flex-direction: column; /* Stack elements vertically */
+    gap: 1.5rem;
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+
+  .main-footer-contact {
+    flex-direction: column; /* Stack label and email */
+    gap: 0.2rem;
+  }
+
+  .main-footer-socials {
+    flex-direction: column; /* Stack label and icons */
+    gap: 0.8rem;
+  }
+}
