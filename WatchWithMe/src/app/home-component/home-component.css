@@ -316,3 +316,69 @@
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
   transition: opacity 0.3s ease; /* Smooth transition when video changes */
 }
+
+
+/* ===========================
+   RESPONSIVE DESIGN
+   =========================== */
+@media (max-width: 960px) {
+  
+  /* --- Hero Section --- */
+  .hero {
+    flex-direction: column; /* Stack text and video vertically */
+    padding: 3rem 1.5rem;
+    gap: 3rem;
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .hero-title {
+    font-size: 2.5rem; /* Smaller title for mobile */
+  }
+
+  .hero-actions {
+    justify-content: center; /* Center the buttons */
+  }
+
+  /* --- Features Section --- */
+  .features-container {
+    padding: 2rem 1.5rem;
+    gap: 4rem;
+  }
+
+  .feature-block, 
+  .feature-block--reverse {
+    flex-direction: column; /* Stack image and text vertically */
+    text-align: center;
+    gap: 2rem;
+  }
+
+  .feature-block-title {
+    font-size: 2rem;
+  }
+
+  /* --- How It Works Section --- */
+  .how-it-works {
+    padding: 3rem 1.5rem;
+  }
+
+  .how-it-works-content {
+    flex-direction: column; /* Stack steps on top, video on bottom */
+    gap: 3rem;
+  }
+
+  .how-it-works-title {
+    font-size: 2.2rem;
+  }
+
+  .step-item {
+    padding: 1rem;
+    border-left: none; /* Remove left border on mobile... */
+    border-top: 4px solid var(--border-color); /* ...and put it on top */
+    border-radius: 0 0 12px 12px; /* Adjust rounded corners */
+  }
+
+  .step-item--active {
+    border-top-color: var(--primary-purple);
+  }
+}
