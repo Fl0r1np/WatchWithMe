@@ -3,16 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\flori\\Documents\\Proiect-WatchWithMe\\WatchWithMeAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{DF054182-E188-43A0-A55C-4B9E03D5F6F0}|WatchWithMeAPI.csproj|c:\\users\\flori\\documents\\proiect-watchwithme\\watchwithmeapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DF054182-E188-43A0-A55C-4B9E03D5F6F0}|WatchWithMeAPI.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{DF054182-E188-43A0-A55C-4B9E03D5F6F0}|WatchWithMeAPI.csproj|c:\\users\\flori\\documents\\proiect-watchwithme\\watchwithmeapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{DF054182-E188-43A0-A55C-4B9E03D5F6F0}|WatchWithMeAPI.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{DF054182-E188-43A0-A55C-4B9E03D5F6F0}|WatchWithMeAPI.csproj|c:\\users\\flori\\documents\\proiect-watchwithme\\watchwithmeapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{DF054182-E188-43A0-A55C-4B9E03D5F6F0}|WatchWithMeAPI.csproj|solutionrelative:properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{DF054182-E188-43A0-A55C-4B9E03D5F6F0}|WatchWithMeAPI.csproj|c:\\users\\flori\\documents\\proiect-watchwithme\\watchwithmeapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DF054182-E188-43A0-A55C-4B9E03D5F6F0}|WatchWithMeAPI.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DF054182-E188-43A0-A55C-4B9E03D5F6F0}|WatchWithMeAPI.csproj|c:\\users\\flori\\documents\\proiect-watchwithme\\watchwithmeapi\\services\\jwtservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DF054182-E188-43A0-A55C-4B9E03D5F6F0}|WatchWithMeAPI.csproj|solutionrelative:services\\jwtservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DF054182-E188-43A0-A55C-4B9E03D5F6F0}|WatchWithMeAPI.csproj|c:\\users\\flori\\documents\\proiect-watchwithme\\watchwithmeapi\\dto\\loginresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DF054182-E188-43A0-A55C-4B9E03D5F6F0}|WatchWithMeAPI.csproj|solutionrelative:dto\\loginresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{DF054182-E188-43A0-A55C-4B9E03D5F6F0}|WatchWithMeAPI.csproj|c:\\users\\flori\\documents\\proiect-watchwithme\\watchwithmeapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -29,59 +33,73 @@
           "SelectedChildIndex": 1,
           "Children": [
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
-            },
-            {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\flori\\Documents\\Proiect-WatchWithMe\\WatchWithMeAPI\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\Users\\flori\\Documents\\Proiect-WatchWithMe\\WatchWithMeAPI\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA0AAAAeAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-27T15:04:34.669Z",
+              "WhenOpened": "2026-02-28T22:42:22.378Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\flori\\Documents\\Proiect-WatchWithMe\\WatchWithMeAPI\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
               "ToolTip": "C:\\Users\\flori\\Documents\\Proiect-WatchWithMe\\WatchWithMeAPI\\appsettings.json",
               "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAPAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-02-27T14:48:43.866Z",
+              "WhenOpened": "2026-02-28T22:21:49.663Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "launchSettings.json",
-              "DocumentMoniker": "C:\\Users\\flori\\Documents\\Proiect-WatchWithMe\\WatchWithMeAPI\\Properties\\launchSettings.json",
-              "RelativeDocumentMoniker": "Properties\\launchSettings.json",
-              "ToolTip": "C:\\Users\\flori\\Documents\\Proiect-WatchWithMe\\WatchWithMeAPI\\Properties\\launchSettings.json",
-              "RelativeToolTip": "Properties\\launchSettings.json",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAB8AAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-02-27T14:40:12.343Z",
+              "Title": "JWTService.cs",
+              "DocumentMoniker": "C:\\Users\\flori\\Documents\\Proiect-WatchWithMe\\WatchWithMeAPI\\Services\\JWTService.cs",
+              "RelativeDocumentMoniker": "Services\\JWTService.cs",
+              "ToolTip": "C:\\Users\\flori\\Documents\\Proiect-WatchWithMe\\WatchWithMeAPI\\Services\\JWTService.cs",
+              "RelativeToolTip": "Services\\JWTService.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAkwBUAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-28T21:35:09.531Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
+              "Title": "LoginResponseDTO.cs",
+              "DocumentMoniker": "C:\\Users\\flori\\Documents\\Proiect-WatchWithMe\\WatchWithMeAPI\\DTO\\LoginResponseDTO.cs",
+              "RelativeDocumentMoniker": "DTO\\LoginResponseDTO.cs",
+              "ToolTip": "C:\\Users\\flori\\Documents\\Proiect-WatchWithMe\\WatchWithMeAPI\\DTO\\LoginResponseDTO.cs",
+              "RelativeToolTip": "DTO\\LoginResponseDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-28T22:18:29.065Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Users\\flori\\Documents\\Proiect-WatchWithMe\\WatchWithMeAPI\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
               "ToolTip": "C:\\Users\\flori\\Documents\\Proiect-WatchWithMe\\WatchWithMeAPI\\Controllers\\AuthController.cs",
               "RelativeToolTip": "Controllers\\AuthController.cs",
-              "ViewState": "AgIAAKUAAAAAAAAAAAAowGwAAAA1AAAAAAAAAA==",
+              "ViewState": "AgIAABkAAAAAAAAAAAAQwDgAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-27T14:39:16.878Z"
+              "WhenOpened": "2026-02-27T14:39:16.878Z",
+              "EditorCaption": ""
             }
           ]
         },

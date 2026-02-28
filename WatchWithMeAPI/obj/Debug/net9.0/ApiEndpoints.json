@@ -19,7 +19,7 @@
     "Parameters": [
       {
         "Name": "model",
-        "Type": "WatchWithMeAPI.DTO.LoginDTO",
+        "Type": "WatchWithMeAPI.DTO.LoginRequestDTO",
         "IsRequired": true
       }
     ],
