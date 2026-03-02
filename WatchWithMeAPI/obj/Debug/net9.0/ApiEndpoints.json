@@ -18,12 +18,22 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "model",
+        "Name": "loginRequest",
         "Type": "WatchWithMeAPI.DTO.LoginRequestDTO",
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "WatchWithMeAPI.DTO.LoginResponseDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "AuthController",

@@ -1,8 +1,10 @@
+import { authGuard } from './auth-guard';
 import { Routes } from '@angular/router';
+import { DashboardComponent } from './dashboard-component/dashboard-component';
 import { HomeComponent } from './home-component/home-component';
 import { LoginComponent } from './login-component/login-component'; 
 import { RegisterComponent } from './register-component/register-component';
-import { LoginSuccess } from './login-success/login-success';
+import { LoginSuccessComponent } from './login-success-component/login-success-component';
 
 export const routes: Routes = [
     {
@@ -15,11 +17,16 @@ export const routes: Routes = [
     },
     {
         path: 'login-success',
-        component: LoginSuccess
+        component: LoginSuccessComponent
     },
     {
         path: 'register',
         component: RegisterComponent
+    },
+    {
+        path: 'dashboard',
+        component: DashboardComponent,
+        canActivate: [authGuard] // Protect the dashboard route with the auth guard
     },
     {
         path: '**',
