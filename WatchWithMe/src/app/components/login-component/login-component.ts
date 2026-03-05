@@ -1,9 +1,9 @@
-import { AuthService } from '../auth-service';
+import { AuthService } from '@services/auth-service/auth-service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment.development';
+import { environment } from '@environments/environment.development';
 
 @Component({
   selector: 'app-login-component',

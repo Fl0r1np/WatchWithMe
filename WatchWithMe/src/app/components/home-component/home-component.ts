@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { WorkStep } from '../work-step';
+import { WorkStep } from '@models/work-step';
 
 @Component({
   selector: 'app-home-component',
