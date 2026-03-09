@@ -1,6 +1,16 @@
 [
   {
     "ContainingType": "AuthController",
+    "Method": "GetDashboardData",
+    "RelativePath": "api/auth/dashboard",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthController",
     "Method": "GoogleCallback",
     "RelativePath": "api/auth/google-callback",
     "HttpMethod": "GET",

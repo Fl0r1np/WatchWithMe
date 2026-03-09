@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using WatchWithMeAPI.DTO;
 using WatchWithMeAPI.Model;
@@ -176,6 +179,21 @@ public class AuthController : ControllerBase
 
     }
 
+    [HttpGet("dashboard")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public IActionResult GetDashboardData(){
 
+        var userEmail = User.FindFirstValue(JwtRegisteredClaimNames.Name) ?? "Email";
+        var userName = User.FindFirstValue(JwtRegisteredClaimNames.GivenName) ?? "Username";
+
+        return Ok( 
+            new {
+                message = $"Welcome to the Dashboard, {userName}!",
+                email = userEmail,
+                secretData = "Here is the private data only logged-in users can see."
+
+        });
+
+    }
 
 }
