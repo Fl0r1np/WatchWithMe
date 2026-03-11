@@ -15,11 +15,23 @@ using WatchWithMeAPI.Services;
 [ApiController]
 public class AuthController : ControllerBase
 {
-    // Services
+    // Necessary services
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly JWTService _jwtService;
 
+    /// <summary>
+    /// Constructor of the class
+    /// </summary>
+    /// <param name="signInManager">
+    /// API for user sing in 
+    /// </param>
+    /// <param name="userManager">
+    /// Class containing all the logic for users repository management
+    /// </param>
+    /// <param name="jwtService">
+    /// The service for JWT 
+    /// </param>
     public AuthController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, JWTService jwtService
         )
     {
@@ -28,6 +40,15 @@ public class AuthController : ControllerBase
         _jwtService = jwtService;
     }
 
+    /// <summary>
+    /// Handles the basic login request
+    /// </summary>
+    /// <param name="loginRequest">
+    /// DTO containing the login data
+    /// </param>
+    /// <returns>
+    /// Returns JSON data as a response
+    /// </returns>
     [HttpPost("login")]
     public async Task<ActionResult<LoginResponseDTO>> Login([FromBody] LoginRequestDTO loginRequest) {
 
@@ -43,7 +64,9 @@ public class AuthController : ControllerBase
         // The credentials are invalid
         if (loginResponse is null)
         {
-            return Unauthorized(new { message = "Invalid email or password." });
+            return Unauthorized(new { 
+                message = "Invalid email or password." 
+            });
 
         }
 
@@ -53,49 +76,75 @@ public class AuthController : ControllerBase
 
     }
 
+    /// <summary>
+    /// Handles the basic registration request
+    /// </summary>
+    /// <param name="registerRequest">
+    /// DTO containing the user data
+    /// </param>
+    /// <returns>
+    /// Returns a JSON data as a response
+    /// </returns>
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterDTO model) {
+    public async Task<IActionResult> Register([FromBody] RegisterDTO registerRequest) {
 
-        // 1. Check if the incoming data passed the validation rules in the DTO
+        // Check if the incoming data passed the validation rules in the DTO
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        // 2. Create the new user object
+        // Create the new user object
         var user = new ApplicationUser
         {
-            UserName = model.Email,
-            Email = model.Email,
-            DisplayName = model.Username
+            UserName = registerRequest.Email,
+            Email = registerRequest.Email,
+            DisplayName = registerRequest.Username
         };
 
-        // 3. Save the user AND hash their password in one step
-        var result = await _userManager.CreateAsync(user, model.Password);
+        // Save the user and hash their password in one step
+        var result = await _userManager.CreateAsync(user, registerRequest.Password);
 
         if (result.Succeeded)
         {
-            // Success! Return a 200 OK status to Angular
+            // Return a 200 response's code to Front-End
             return Ok(new { message = "User registered successfully!" });
         }
 
-        // 4. If it failed (e.g., password too weak, email already taken), return the errors
+        // If it failed (e.g., password too weak, email already taken), return the errors
         return BadRequest(result.Errors);
 
     }
 
+    /// <summary>
+    /// Handles the login with a Google Account
+    /// </summary>
+    /// <param name="provider">
+    /// What provider to use for login
+    /// </param>
+    /// <returns>
+    /// 
+    /// </returns>
     [HttpGet("login-google")]
     public IActionResult LoginGoogle(string provider = "Google")
     {
-
+        // Method to call when a succes login happens
         var redirectUrl = Url.Action(nameof(GoogleCallback), "Auth");
 
+        // Preparing the set of metadata for external login for provider
         var proprieties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
 
+        // Redirecting the Front-End to the provider
         return Challenge(proprieties, provider);
 
     }
 
+    /// <summary>
+    /// Responsible for identifying the user, creating their account if they’re new, and finally handing them a JWT so they can actually use the app
+    /// </summary>
+    /// <returns>
+    /// Returns a Redirect to Front-End Handler page
+    /// </returns>
     [HttpGet("google-callback")]
     public async Task<IActionResult> GoogleCallback()
     {
@@ -103,6 +152,7 @@ public class AuthController : ControllerBase
         // Get the information Google sent back about the user
         var info = await _signInManager.GetExternalLoginInfoAsync();
 
+        // Google Authentification failed
         if (info == null)
         {
             return Redirect("http://localhost:4200/login?error=google_auth_failed");
@@ -116,7 +166,7 @@ public class AuthController : ControllerBase
         if (signInResult.Succeeded) // Existing user
         {
             
-            // Fetch the user object from the database using thei Google ID so we can generate a token
+            // Fetch the user object from the database using their Google ID so we can generate a token
             user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
 
         }
@@ -133,7 +183,7 @@ public class AuthController : ControllerBase
                 // Check if a user with this email already exists
                 user = await _userManager.FindByEmailAsync(email);
 
-                // User does not exists, so we will register him
+                // User does not exist, so we will register him
                 if (user == null)
                 {
 
@@ -179,6 +229,12 @@ public class AuthController : ControllerBase
 
     }
 
+    /// <summary>
+    /// A simple dashboard page to test the JWT 
+    /// </summary>
+    /// <returns>
+    /// JSON data contaning the user's info
+    /// </returns>
     [HttpGet("dashboard")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public IActionResult GetDashboardData(){

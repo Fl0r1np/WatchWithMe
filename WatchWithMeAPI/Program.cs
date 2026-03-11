@@ -11,7 +11,6 @@ using WatchWithMeAPI.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
@@ -57,6 +56,7 @@ builder.Services.AddSwaggerGen( c => {
 
 });
 
+// Connecting to DataBase
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<WatchWithMeContext>(options => {
@@ -64,6 +64,7 @@ builder.Services.AddDbContext<WatchWithMeContext>(options => {
     options.UseOpenIddict();
 });
 
+// Setting up the Identity for DataBase
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     // Optional: You can put password requirements here later
@@ -72,7 +73,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     .AddEntityFrameworkStores<WatchWithMeContext>() // Tells Identity to use your SQL database
     .AddDefaultTokenProviders();
 
-// Setting for connecting with the Angular app
+// Enable Cross-Origin Requests
+// Enable which domains can communicate with this Back-End - Setting for connecting with the Angular app
 var allowedOrigins = builder.Configuration.GetValue<string>("allowedOrigins")!.Split(",");
 
 builder.Services.AddCors(options => {
@@ -85,24 +87,30 @@ builder.Services.AddCors(options => {
     });
 });
 
+
+// Configuration of 0Auth 2.0 
 var google = builder.Configuration.GetSection("Authentication:Google");
+
+// Sets the rules for the middleware 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
 })
     .AddCookie()
-    .AddGoogle(options =>
+    .AddGoogle(options => // Handle the actual login logic
     {
         options.ClientId = google["ClientId"]!;
         options.ClientSecret = google["ClientSecret"]!;
         options.CallbackPath = "/signin-google";
     })
-    .AddJwtBearer(options => {
+    .AddJwtBearer(options => { // Adds to support for JWT 
 
         options.MapInboundClaims = false; // Tells microsoft to not auto-translate our jwt claims
         options.RequireHttpsMetadata = false;
         options.SaveToken = true;
+        
+        // This validates the JWT 
         options.TokenValidationParameters = new TokenValidationParameters
         {
 
@@ -119,9 +127,9 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddAuthorization();
-
 builder.Services.AddScoped<JWTService>();
 
+// Ignore SSL Certificate Validation
 var httpClientHandler = new HttpClientHandler();
 httpClientHandler.ServerCertificateCustomValidationCallback =
     (message, cert, chain, errors) => { return true; };
@@ -145,10 +153,13 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
 
+// Look for the JWT set up before and identifies the user 
 app.UseAuthentication();
 
+// Checks if the identified user has the right permissions to access the requested URL 
 app.UseAuthorization();
 
+// Routes the request to your controller classes
 app.MapControllers();
 
 app.Run();

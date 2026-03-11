@@ -3,19 +3,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WatchWithMeAPI.Model
 {
-    public class WatchWithMeContext : IdentityDbContext<ApplicationUser>
+    public class WatchWithMeContext(DbContextOptions<WatchWithMeContext> options)
+        : IdentityDbContext<ApplicationUser>(options)
     {
-
-        public WatchWithMeContext(DbContextOptions<WatchWithMeContext> options) : base(options)
-        {
-        
-        }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            // Necessary setup
             base.OnModelCreating(builder);
             builder.UseOpenIddict();
+            
+            
+            
         }
 
-        }
+    }
 }

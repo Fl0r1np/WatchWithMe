@@ -207,7 +207,6 @@ C:\Users\flori\Documents\Proiect-WatchWithMe\WatchWithMeAPI\obj\Debug\net9.0\ref
 C:\Users\flori\Documents\Proiect-WatchWithMe\WatchWithMeAPI\obj\Debug\net9.0\WatchWithMeAPI.pdb
 C:\Users\flori\Documents\Proiect-WatchWithMe\WatchWithMeAPI\obj\Debug\net9.0\WatchWithMeAPI.genruntimeconfig.cache
 C:\Users\flori\Documents\Proiect-WatchWithMe\WatchWithMeAPI\obj\Debug\net9.0\ref\WatchWithMeAPI.dll
-C:\Users\flori\Documents\Proiect-WatchWithMe\WatchWithMeAPI\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
 C:\Users\flori\Documents\Proiect-WatchWithMe\WatchWithMeAPI\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\flori\Documents\Proiect-WatchWithMe\WatchWithMeAPI\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\flori\Documents\Proiect-WatchWithMe\WatchWithMeAPI\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll

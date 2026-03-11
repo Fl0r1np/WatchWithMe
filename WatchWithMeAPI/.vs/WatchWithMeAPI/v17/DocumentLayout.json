@@ -38,8 +38,7 @@
               "RelativeToolTip": "Services\\JWTService.cs",
               "ViewState": "AgIAACwAAAAAAAAAAAAgwDUAAABIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-09T22:36:55.65Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-09T22:36:55.65Z"
             },
             {
               "$type": "Document",
@@ -49,7 +48,7 @@
               "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
               "ToolTip": "C:\\Users\\flori\\Documents\\Proiect-WatchWithMe\\WatchWithMeAPI\\Controllers\\AuthController.cs",
               "RelativeToolTip": "Controllers\\AuthController.cs",
-              "ViewState": "AgIAALQAAAAAAAAAAAAswLoAAAAlAAAAAAAAAA==",
+              "ViewState": "AgIAAGYAAAAAAAAAAAAswGwAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-09T21:52:12.709Z",
               "EditorCaption": ""
@@ -64,8 +63,7 @@
               "RelativeToolTip": "Program.cs",
               "ViewState": "AgIAAGAAAAAAAAAAAAAAAGYAAABhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-09T20:53:32.775Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-09T20:53:32.775Z"
             }
           ]
         },
