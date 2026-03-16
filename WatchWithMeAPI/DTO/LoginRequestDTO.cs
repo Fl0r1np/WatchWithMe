@@ -2,7 +2,7 @@
 
 namespace WatchWithMeAPI.DTO
 {
-    public class LoginDTO
+    public class LoginRequestDTO
     {
 
         [Required]

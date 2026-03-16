@@ -5,7 +5,7 @@ namespace WatchWithMeAPI.DTO
     public class RegisterDTO
     {
         [Required]
-        public string Username { get; set; } // We will save this to your new DisplayName column!
+        public string Username { get; set; } 
 
         [Required]
         [EmailAddress]

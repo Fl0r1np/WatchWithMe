@@ -1,8 +1,9 @@
+import { AuthService } from '@services/auth-service/auth-service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment.development';
+import { environment } from '@environments/environment.development';
 
 @Component({
   selector: 'app-login-component',
@@ -121,7 +122,7 @@ export class LoginComponent {
   // Backend API URL
   private apiUrl: string = environment.apiURL;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) {}
+  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef, private authService: AuthService) {}
 
   // Checking if there is a query parameter indicating a error from the backend
   ngOnInit(): void {
@@ -190,9 +191,15 @@ export class LoginComponent {
       this.http.post(`${this.apiUrl}/api/auth/login`, loginData)
         .subscribe({
           next: (response: any) => {
-            // It worked! Redirect them to the login page
-            alert('Login successful!');
-            this.router.navigate(['/home']);
+
+            console.log('Login successful! Response:', response);
+
+            // Setting the token
+            this.authService.saveToken(response.accessToken);
+
+            // Redirecting to the dashboard
+            this.router.navigate(['/dashboard']);
+
           },
           error: (err) => {
             // If the backend returns a BadRequest, catch the errors here
