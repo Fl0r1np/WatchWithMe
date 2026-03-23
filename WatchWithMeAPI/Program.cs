@@ -5,8 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using FluentValidation;
+using WatchWithMeAPI.DTO;
 using WatchWithMeAPI.Model;
 using WatchWithMeAPI.Services;
+using WatchWithMeAPI.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,7 +68,7 @@ builder.Services.AddDbContext<WatchWithMeContext>(options => {
 });
 
 // Setting up the Identity for DataBase
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
     // Optional: You can put password requirements here later
     options.SignIn.RequireConfirmedAccount = false;
@@ -128,6 +131,9 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<JWTService>();
+
+// Inject the custom validators
+builder.Services.AddScoped<IValidator<UpdateProfilePictureRequestDTO>, ProfilePictureFilenameValidator>();
 
 // Ignore SSL Certificate Validation
 var httpClientHandler = new HttpClientHandler();

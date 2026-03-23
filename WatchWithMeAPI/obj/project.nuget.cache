@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "40Op8w8hgaE=",
+  "dgSpecHash": "xo1MKEendj8=",
   "success": true,
   "projectFilePath": "C:\\Users\\flori\\Documents\\Proiect-WatchWithMe\\WatchWithMeAPI\\WatchWithMeAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\flori\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\flori\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
+    "C:\\Users\\flori\\.nuget\\packages\\fluentvalidation\\12.1.1\\fluentvalidation.12.1.1.nupkg.sha512",
     "C:\\Users\\flori\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\flori\\.nuget\\packages\\microsoft.aspnetcore.authentication.google\\9.0.13\\microsoft.aspnetcore.authentication.google.9.0.13.nupkg.sha512",
     "C:\\Users\\flori\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\9.0.13\\microsoft.aspnetcore.authentication.jwtbearer.9.0.13.nupkg.sha512",

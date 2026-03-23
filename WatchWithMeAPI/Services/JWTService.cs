@@ -12,8 +12,8 @@ namespace WatchWithMeAPI.Services
     {
         
         // Necessary services
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace WatchWithMeAPI.Services
         /// <param name="configuration">
         /// An interface provided by .NET that gives you a unified view of all your settings
         /// </param>
-        public JWTService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        public JWTService(SignInManager<User> signInManager, UserManager<User> userManager, IConfiguration configuration)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -72,7 +72,7 @@ namespace WatchWithMeAPI.Services
         /// <returns>
         /// Returns an LoginResponseDTO containing the JWT token and additional info
         /// </returns>
-        public LoginResponseDTO GenerateToken(ApplicationUser user)
+        public LoginResponseDTO GenerateToken(User user)
         {
             
             // Get the necessary data from the configuration

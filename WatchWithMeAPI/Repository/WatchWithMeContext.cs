@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace WatchWithMeAPI.Model
 {
     public class WatchWithMeContext(DbContextOptions<WatchWithMeContext> options)
-        : IdentityDbContext<ApplicationUser>(options)
+        : IdentityDbContext<User>(options)
     {
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -12,7 +12,10 @@ namespace WatchWithMeAPI.Model
             base.OnModelCreating(builder);
             builder.UseOpenIddict();
             
-            
+            // Set a default value for the User ProfilePicture
+            builder.Entity<User>()
+                .Property(u => u.ProfilePicture)
+                .HasDefaultValue("avatar-default.png");
             
         }
 

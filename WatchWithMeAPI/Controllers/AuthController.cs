@@ -16,8 +16,8 @@ using WatchWithMeAPI.Services;
 public class AuthController : ControllerBase
 {
     // Necessary services
-    private readonly SignInManager<ApplicationUser> _signInManager;
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly SignInManager<User> _signInManager;
+    private readonly UserManager<User> _userManager;
     private readonly JWTService _jwtService;
 
     /// <summary>
@@ -32,7 +32,7 @@ public class AuthController : ControllerBase
     /// <param name="jwtService">
     /// The service for JWT 
     /// </param>
-    public AuthController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, JWTService jwtService
+    public AuthController(SignInManager<User> signInManager, UserManager<User> userManager, JWTService jwtService
         )
     {
         _signInManager = signInManager;
@@ -95,12 +95,14 @@ public class AuthController : ControllerBase
         }
 
         // Create the new user object
-        var user = new ApplicationUser
+        var user = new User
         {
             UserName = registerRequest.Email,
             Email = registerRequest.Email,
             DisplayName = registerRequest.Username
         };
+        
+        
 
         // Save the user and hash their password in one step
         var result = await _userManager.CreateAsync(user, registerRequest.Password);
@@ -161,7 +163,7 @@ public class AuthController : ControllerBase
         // Attempt to sign in the user if they've already linked this Google account before
         var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
 
-        ApplicationUser user = null;
+        User user = null;
 
         if (signInResult.Succeeded) // Existing user
         {
@@ -187,7 +189,7 @@ public class AuthController : ControllerBase
                 if (user == null)
                 {
 
-                    user = new ApplicationUser { UserName = email, Email = email, DisplayName = username };
+                    user = new User { UserName = email, Email = email, DisplayName = username };
                     var createResult = await _userManager.CreateAsync(user);
 
                     // There was a problem registering the user
