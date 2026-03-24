@@ -2,8 +2,9 @@
 
 namespace WatchWithMeAPI.DTO;
 
-public class UpdateProfilePictureRequestDTO
+public class EmailUpdateRequestDTO
 {
     [Required]
-    public string AvatarFilename { get; set; }
+    [EmailAddress]
+    public string Email { get; set; }
 }

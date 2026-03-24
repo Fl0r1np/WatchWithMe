@@ -97,9 +97,8 @@ public class AuthController : ControllerBase
         // Create the new user object
         var user = new User
         {
-            UserName = registerRequest.Email,
+            UserName = registerRequest.Username,
             Email = registerRequest.Email,
-            DisplayName = registerRequest.Username
         };
         
         
@@ -175,21 +174,30 @@ public class AuthController : ControllerBase
         else { // New user
 
             // Getting user data
-            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-            var username = info.Principal.FindFirstValue(ClaimTypes.GivenName) ?? info.Principal.FindFirstValue(ClaimTypes.Name);
-
-            if (email != null && username != null)
+            var googleEmail = info.Principal.FindFirstValue(ClaimTypes.Email);
+            var googleName = info.Principal.FindFirstValue(ClaimTypes.Name) ?? "Username";
+            
+            // Strip out invalid characters from the username
+            var sanitizedName = new string(googleName.Where(char.IsLetterOrDigit).ToArray());
+            
+            // Append a short random string to the end of the username to avoid any potential collisions
+            var uniqueSuffix = Guid.NewGuid().ToString().Substring(0, 6);
+            var finalUserName = $"{sanitizedName}{uniqueSuffix}";
+            
+            
+            
+            if (googleEmail != null && finalUserName != null)
             {
 
 
                 // Check if a user with this email already exists
-                user = await _userManager.FindByEmailAsync(email);
+                user = await _userManager.FindByEmailAsync(googleEmail);
 
                 // User does not exist, so we will register him
                 if (user == null)
                 {
-
-                    user = new User { UserName = email, Email = email, DisplayName = username };
+ 
+                    user = new User { UserName = finalUserName, Email = googleEmail };
                     var createResult = await _userManager.CreateAsync(user);
 
                     // There was a problem registering the user
@@ -241,7 +249,7 @@ public class AuthController : ControllerBase
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public IActionResult GetDashboardData(){
 
-        var userEmail = User.FindFirstValue(JwtRegisteredClaimNames.Name) ?? "Email";
+        var userEmail = User.FindFirstValue(JwtRegisteredClaimNames.Email) ?? "Email";
         var userName = User.FindFirstValue(JwtRegisteredClaimNames.GivenName) ?? "Username";
 
         return Ok( 

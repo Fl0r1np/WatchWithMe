@@ -133,7 +133,11 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<JWTService>();
 
 // Inject the custom validators
-builder.Services.AddScoped<IValidator<UpdateProfilePictureRequestDTO>, ProfilePictureFilenameValidator>();
+builder.Services.AddScoped<IValidator<ProfilePictureUpdateRequestDTO>, ProfilePictureUpdateRequestValidator>();
+builder.Services.AddScoped<IValidator<EmailUpdateRequestDTO>, EmailUpdateRequestValidator>();
+builder.Services.AddScoped<IValidator<PasswordUpdateRequestDTO>, PasswordUpdateRequestValidator>();
+builder.Services.AddScoped<IValidator<UserNameUpdateRequestDTO>, UserNameUpdateRequestValidator>();
+builder.Services.AddScoped<IValidator<StatusUpdateRequestDTO>, StatusUpdateRequestValidator>();
 
 // Ignore SSL Certificate Validation
 var httpClientHandler = new HttpClientHandler();
