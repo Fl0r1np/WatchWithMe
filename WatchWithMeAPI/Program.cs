@@ -76,10 +76,6 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
     .AddEntityFrameworkStores<WatchWithMeContext>() // Tells Identity to use your SQL database
     .AddDefaultTokenProviders();
 
-// Enable Cross-Origin Requests
-// Enable which domains can communicate with this Back-End - Setting for connecting with the Angular app
-var allowedOrigins = builder.Configuration.GetValue<string>("allowedOrigins")!.Split(",");
-
 builder.Services.AddCors(options => {
 
     options.AddPolicy("AllowAll", builder =>

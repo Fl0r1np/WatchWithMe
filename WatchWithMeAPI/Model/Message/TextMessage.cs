@@ -10,7 +10,7 @@ public class TextMessage : Message
     }
 
     public void Edit(string newContent)
-    {
+    {   
         throw new NotImplementedException();
     }
 }

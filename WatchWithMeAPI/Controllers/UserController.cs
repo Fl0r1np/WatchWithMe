@@ -17,9 +17,7 @@ public class UserController : ControllerBase
 {
     
     // Necessary services
-    private readonly SignInManager<User> _signInManager;
     private readonly UserManager<User> _userManager;
-    private readonly JWTService _jwtService;
     
     // Validator
     private readonly IValidator<ProfilePictureUpdateRequestDTO> _validatorProfilePictureRequest;
@@ -31,14 +29,8 @@ public class UserController : ControllerBase
     /// <summary>
     /// Constructor of the class
     /// </summary>
-    /// <param name="signInManager">
-    /// API for user sing in 
-    /// </param>
     /// <param name="userManager">
     /// Class containing all the logic for users repository management
-    /// </param>
-    /// <param name="jwtService">
-    /// The service for JWT 
     /// </param>
     /// <param name="validatorProfilePictureRequest">
     /// Validator for the new Profile Picture
@@ -49,9 +41,8 @@ public class UserController : ControllerBase
     /// <param name="validatorPasswordUpdateRequest">
     /// Validator for the new Password
     /// </param>
-    public UserController(SignInManager<User> signInManager, 
+    public UserController(
         UserManager<User> userManager, 
-        JWTService jwtService, 
         IValidator<ProfilePictureUpdateRequestDTO> validatorProfilePictureRequest, 
         IValidator<EmailUpdateRequestDTO> validatorEmailUpdateRequest,
         IValidator<PasswordUpdateRequestDTO> validatorPasswordUpdateRequest,
@@ -61,9 +52,7 @@ public class UserController : ControllerBase
     {
         
         // Asing the necessary services to the class
-        _signInManager = signInManager;
         _userManager = userManager;
-        _jwtService = jwtService;
         
         // Assigning the necessary validators to the class
         _validatorProfilePictureRequest = validatorProfilePictureRequest;

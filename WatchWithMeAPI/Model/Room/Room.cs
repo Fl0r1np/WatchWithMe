@@ -1,5 +1,7 @@
-﻿namespace WatchWithMeAPI.Model;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
+namespace WatchWithMeAPI.Model;
+[Table("rooms")]
 public class Room
 {
 
