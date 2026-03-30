@@ -211,3 +211,4 @@ C:\Users\flori\Documents\Proiect-WatchWithMe\WatchWithMeAPI\bin\Debug\net9.0\Mic
 C:\Users\flori\Documents\Proiect-WatchWithMe\WatchWithMeAPI\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\flori\Documents\Proiect-WatchWithMe\WatchWithMeAPI\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\flori\Documents\Proiect-WatchWithMe\WatchWithMeAPI\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\flori\Documents\Proiect-WatchWithMe\WatchWithMeAPI\bin\Debug\net9.0\FluentValidation.dll

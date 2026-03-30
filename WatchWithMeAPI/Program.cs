@@ -5,8 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using FluentValidation;
+using WatchWithMeAPI.DTO;
 using WatchWithMeAPI.Model;
 using WatchWithMeAPI.Services;
+using WatchWithMeAPI.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,17 +68,13 @@ builder.Services.AddDbContext<WatchWithMeContext>(options => {
 });
 
 // Setting up the Identity for DataBase
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
     // Optional: You can put password requirements here later
     options.SignIn.RequireConfirmedAccount = false;
 })
     .AddEntityFrameworkStores<WatchWithMeContext>() // Tells Identity to use your SQL database
     .AddDefaultTokenProviders();
-
-// Enable Cross-Origin Requests
-// Enable which domains can communicate with this Back-End - Setting for connecting with the Angular app
-var allowedOrigins = builder.Configuration.GetValue<string>("allowedOrigins")!.Split(",");
 
 builder.Services.AddCors(options => {
 
@@ -128,6 +127,13 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<JWTService>();
+
+// Inject the custom validators
+builder.Services.AddScoped<IValidator<ProfilePictureUpdateRequestDTO>, ProfilePictureUpdateRequestValidator>();
+builder.Services.AddScoped<IValidator<EmailUpdateRequestDTO>, EmailUpdateRequestValidator>();
+builder.Services.AddScoped<IValidator<PasswordUpdateRequestDTO>, PasswordUpdateRequestValidator>();
+builder.Services.AddScoped<IValidator<UserNameUpdateRequestDTO>, UserNameUpdateRequestValidator>();
+builder.Services.AddScoped<IValidator<StatusUpdateRequestDTO>, StatusUpdateRequestValidator>();
 
 // Ignore SSL Certificate Validation
 var httpClientHandler = new HttpClientHandler();
