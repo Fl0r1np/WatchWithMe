@@ -3,6 +3,7 @@
 
 ### 📦Tehnologies
 * Angular
+* HTML/CSS
 * ASP.NET Core
 * Entity Framework Core
 * SQL Server
