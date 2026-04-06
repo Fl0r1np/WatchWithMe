@@ -1,0 +1,269 @@
+<div class="dashboard-layout">
+  
+  <aside class="dashboard-sidebar" [class.mobile-hidden]="isMobile && mobileViewMode === 'content'">
+    <div class="sidebar-menu">
+      <button 
+        class="sidebar-btn" 
+        [class.sidebar-btn-active]="activeTab === 'account' && !isMobile"
+        (click)="switchTab('account')">
+        <div class="sidebar-btn-left">
+          <img src="assets/icons/account-icon.png" alt="Account Sidebar Icon" class="sidebar-icon">
+          <span>Account</span>
+        </div>
+        <img src="assets/icons/right-arrow-icon.png" alt="Arrow Right Icon" class="sidebar-arrow-right">
+      </button>
+      <button 
+        class="sidebar-btn" 
+        [class.sidebar-btn-active]="activeTab === 'notifications' && !isMobile"
+        (click)="switchTab('notifications')">
+        <div class="sidebar-btn-left">
+            <img src="assets/icons/notifications-icon.png" alt="Notifications Sidebar Icon" class="sidebar-icon">
+            <span>Notifications</span>
+        </div>
+        <img src="assets/icons/right-arrow-icon.png" alt="Arrow Right Icon" class="sidebar-arrow-right">
+      </button>
+    </div>
+    
+    <div class="sidebar-footer">
+        <button class="sidebar-btn btn-logout" (click)="logout()">
+            <div class="sidebar-btn-left">
+                <img src="assets/icons/logout-icon.png" alt="Logout Icon" class="sidebar-icon">
+                <span>Logout</span> 
+            </div>
+        </button>
+    </div>
+  </aside>
+
+  <main class="dashboard-content">
+    
+    @if (isMobile && this.mobileViewMode === 'content') {
+      <button class="back-btn" (click)="goBackToList()">
+        <img src="assets/icons/left-arrow-icon.png" alt="Arrow Left Icon" class="back-icon">
+        <span>Back</span>
+      </button>
+    }
+
+    @if (activeTab === 'account') {
+      <div class="tab-container">
+        
+        @if (isLoading){
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <p>Loading your account details...</p>
+            </div>
+        }
+        @else {
+            <section class="content-section">
+            
+                <h3 class="section-title">Account</h3>
+                
+                <!--
+                <header class="profile-header">
+                    <img [src]="getProfilePicture(currentUser.profilePicture)" alt="Profile Picture" class="profile-header-avatar">
+                    <h2 class="profile-header-username">{{ currentUser.name }}</h2>
+                </header>
+                
+                <div class="divider-line-horizontal"></div>
+                -->
+
+                <div class="item-row">
+                    <div class="item-info">
+                        <span class="item-label">Profile Picture</span>
+                        <img [src]="getProfilePicture(currentUser.profilePicture)" alt="Current Profile Picture" class="item-value-avatar">
+                    </div>
+                    <button class="btn btn-secondary" (click)="openProfilePicModal()">Change</button>
+                </div>
+
+                <div class="item-row">
+                    <div class="item-info">
+                    <span class="item-label">Username</span>
+                    <span class="item-value">{{ currentUser.username }}</span>
+                    </div>
+                    <button class="btn btn-secondary" (click)="openUsernameModal()">Change</button>
+                </div>
+
+                @if (currentUser.authMethod === 'Basic') {
+                <div class="item-row">
+                    <div class="item-info">
+                    <span class="item-label">Email</span>
+                    <span class="item-value">{{ currentUser.email }}</span>
+                    </div>
+                    <button class="btn btn-secondary" (click)="openEmailModal()">Change</button>
+                </div>
+                } @else {
+                <div class="google-auth-notice">
+                <p>
+                    You log into this application using your Google Account. To change your email, please visit your 
+                    <a href="https://myaccount.google.com/security" target="_blank" class="text-link">Google Account Settings</a>.
+                </p>
+                </div>
+              }
+
+            </section>
+
+            <section class="content-section">
+            <h3 class="section-title">Appearance</h3>
+
+            <div class="item-row">
+                <div class="item-info">
+                <span class="item-label">Status</span>
+                <span class="item-value">{{ currentUser.status }}</span>
+                </div>
+                <button class="btn btn-secondary" (click)="openStatusModal()">Change</button>
+            </div>
+        
+            </section>
+
+            <section class="content-section">
+            <h3 class="section-title">Security</h3>
+            
+            @if (currentUser.authMethod === 'Basic') {
+                <div class="item-row">
+                    <div class="item-info">
+                        <span class="item-label">Password</span>
+                        <span class="item-value">********</span>
+                    </div>
+                    <button class="btn btn-secondary" (click)="openPasswordModal()">Change</button>
+                </div>
+            } @else {
+                <div class="google-auth-notice">
+                <p>
+                    You log into this application using your Google Account. To change your password, please visit your 
+                    <a href="https://myaccount.google.com/security" target="_blank" class="text-link">Google Account Settings</a>.
+                </p>
+                </div>
+            }
+            </section>
+        }
+      
+        </div>
+    }
+
+    @if (activeTab === 'notifications') {
+      <div class="tab-container">
+        <section class="content-section">
+
+            <h3 class="section-title">Notification Settings</h3>
+
+            <div class="item-row checkbox-row" (click)="toggleNotification('invitations')">
+                <span class="item-label">Notify me about invitations</span>
+                <div class="custom-checkbox" [class.checkbox-checked]="notifyInvitations"></div>
+            </div>
+
+            <div class="item-row checkbox-row" (click)="toggleNotification('basic')">
+                <span class="item-label">Notify me about basic notifications</span>
+                <div class="custom-checkbox" [class.checkbox-checked]="notifyBasic"></div>
+            </div>
+        </section>
+      </div>
+    }
+
+  </main>
+</div>
+
+@if (isUsernameModalOpen) {
+  <div class="modal-overlay">
+    <div class="modal-card">
+      <h3 class="modal-title">Change Username</h3>
+      <form class="modal-form" [formGroup]="usernameForm">
+        <div class="form-group">
+          <label class="form-label">New Username</label>
+          <input type="text" formControlName="newUsername" class="form-input" placeholder="Enter new username">
+        </div>
+      </form>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" (click)="closeAllModals()">Cancel</button>
+        <button class="btn btn-primary" (click)="saveUsername()">Save</button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (isEmailModalOpen) {
+  <div class="modal-overlay">
+    <div class="modal-card">
+      <h3 class="modal-title">Change Email</h3>
+      <form class="modal-form" [formGroup]="emailForm">
+        <div class="form-group">
+          <label class="form-label">New Email</label>
+          <input type="email" formControlName="newEmail" class="form-input" placeholder="Enter new email address">
+        </div>
+      </form>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" (click)="closeAllModals()">Cancel</button>
+        <button class="btn btn-primary" (click)="saveEmail()">Save</button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (isProfilePicModalOpen) {
+  <div class="modal-overlay">
+    <div class="modal-card">
+      <h3 class="modal-title">Select Profile Picture</h3>
+      <div class="preset-grid">
+        @for (avatar of presetProfilePictures; track avatar) {
+          <img 
+            [src]="getProfilePicture(avatar)" 
+            alt="Preset Avatar" 
+            class="preset-img" 
+            [class.preset-selected]="selectedProfilePicTemp === avatar"
+            (click)="selectedProfilePicTemp = avatar">
+        }
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" (click)="closeAllModals()">Cancel</button>
+        <button class="btn btn-primary" (click)="saveProfilePic()">Save</button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (isStatusModalOpen) {
+  <div class="modal-overlay">
+    <div class="modal-card">
+      <h3 class="modal-title">Select Status</h3>
+      <div class="status-options">
+        <div class="status-option" [class.status-selected]="selectedStatusTemp === 'Online'" (click)="selectedStatusTemp = 'Online'">
+          <span class="status-indicator public"></span> Online
+        </div>
+        <div class="status-option" [class.status-selected]="selectedStatusTemp === 'Do not disturb'" (click)="selectedStatusTemp = 'Do not disturb'">
+          <span class="status-indicator dnd"></span> Do not disturb
+        </div>
+        <div class="status-option" [class.status-selected]="selectedStatusTemp === 'Away'" (click)="selectedStatusTemp = 'Private'">
+          <span class="status-indicator private"></span> Private
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" (click)="closeAllModals()">Cancel</button>
+        <button class="btn btn-primary" (click)="saveStatus()">Save</button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (isPasswordModalOpen) {
+  <div class="modal-overlay">
+    <div class="modal-card">
+      <h3 class="modal-title">Change Password</h3>
+      <form class="modal-form" [formGroup]="passwordForm">
+        <div class="form-group">
+          <label class="form-label">Current Password</label>
+          <input type="password" formControlName="currentPassword" class="form-input" placeholder="Enter current password">
+        </div>
+        <div class="form-group">
+          <label class="form-label">New Password</label>
+          <input type="password" formControlName="newPassword" class="form-input" placeholder="Enter new password">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm New Password</label>
+          <input type="password" formControlName="confirmNewPassword" class="form-input" placeholder="Rewrite new password">
+        </div>
+      </form>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" (click)="closeAllModals()">Cancel</button>
+        <button class="btn btn-primary" (click)="savePassword()">Save</button>
+      </div>
+    </div>
+  </div>
+}

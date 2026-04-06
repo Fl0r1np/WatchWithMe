@@ -4,8 +4,8 @@ public enum UserStatus
 {
     Online,
     Offline,
+    Public,
     DoNotDisturb,
-    Private,
     InCall,
     InRoom,
     

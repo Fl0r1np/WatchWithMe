@@ -21,146 +21,7 @@ export const passwordMatchValidator: ValidatorFn = (control: AbstractControl): V
 @Component({
   selector: 'app-register-component',
   imports: [RouterLink, ReactiveFormsModule],
-  template: `
-    <div class="register-page">
-      <div class="register-card">
-        <h1 class="register-card-title">Register</h1>
-
-        <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-          
-          <div class="form-group">
-            <label for="username" class="form-label">Username</label>
-            <input 
-              type="text" 
-              id="username" 
-              formControlName="username"
-              class="form-input" 
-              [class.input-error]="isInvalid('username')"
-              placeholder="Enter your username">
-            
-            @if (isInvalid('username')) {
-              <div class="error-text">
-                @if (registerForm.get('username')?.hasError('required')) {
-                  <span>Username is required.</span>
-                }
-                @if (registerForm.get('username')?.hasError('minlength') && !registerForm.get('username')?.hasError('required')) {
-                  <span>Username must be at least 6 characters.</span>
-                }
-              </div>
-            }
-          </div>
-
-          <div class="form-group">
-            <label for="email" class="form-label">Email</label>
-            <input 
-              type="email" 
-              id="email" 
-              formControlName="email"
-              class="form-input" 
-              [class.input-error]="isInvalid('email')"
-              placeholder="Enter your email">
-            
-            @if (isInvalid('email')) {
-              <div class="error-text">
-                @if (registerForm.get('email')?.hasError('required')) {
-                  <span>Email is required.</span>
-                }
-                @if (registerForm.get('email')?.hasError('email') && !registerForm.get('email')?.hasError('required')) {
-                  <span>Please enter a valid email address.</span>
-                }
-              </div>
-            }
-          </div>
-
-          <div class="form-group">
-            <label for="password" class="form-label">Password</label>
-            
-            <div class="password-wrapper">
-              <input 
-                [type]="isPasswordHidden ? 'password' : 'text'" 
-                id="password" 
-                formControlName="password"
-                class="form-input" 
-                [class.input-error]="isInvalid('password')"
-                placeholder="Create a password">
-                
-              <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
-                {{ isPasswordHidden ? 'Show' : 'Hide' }}
-              </button>
-            </div>
-
-            @if (isInvalid('password')) {
-              <div class="error-text">
-                @if (registerForm.get('password')?.hasError('required')) {
-                  <span>Password is required.</span>
-                }
-                @if (registerForm.get('password')?.hasError('minlength') && !registerForm.get('password')?.hasError('required')) {
-                  <span>Password must be at least 8 characters.</span>
-                }
-              </div>
-            }
-          </div>
-
-          <div class="form-group">
-            <label for="confirmPassword" class="form-label">Confirm Password</label>
-            
-            <div class="password-wrapper">
-              <input 
-                [type]="isConfirmPasswordHidden ? 'password' : 'text'" 
-                id="confirmPassword" 
-                formControlName="confirmPassword"
-                class="form-input" 
-                [class.input-error]="isInvalid('confirmPassword')"
-                placeholder="Rewrite your password">
-                
-              <button type="button" class="password-toggle" (click)="toggleConfirmPasswordVisibility()">
-                {{ isConfirmPasswordHidden ? 'Show' : 'Hide' }}
-              </button>
-            </div>
-
-            @if (isInvalid('confirmPassword')) {
-              <div class="error-text">
-                @if (registerForm.get('confirmPassword')?.hasError('required')) {
-                  <span>Please confirm your password.</span>
-                }
-                @if (registerForm.get('confirmPassword')?.hasError('passwordMismatch') && !registerForm.get('confirmPassword')?.hasError('required')) {
-                  <span>Passwords do not match.</span>
-                }
-              </div>
-            }
-          </div>
-
-          <button type="submit" class="btn btn-primary btn-full" (click)="onSubmit()">Register</button>
-
-          <div class="form-footer">
-            <span class="options-text">Already have an account?
-              <a routerLink="/login" class="text-link">Sing in</a>
-            </span>
-          </div>
-        </form>
-
-        <div class="divider">
-          <span class="divider-line"></span>
-          <span class="divider-text">OR</span>
-          <span class="divider-line"></span>
-        </div>
-
-        <div class="social-login">
-          <button type="button" class="btn btn-google btn-full" (click)="loginWithGoogle()">
-            <img src="/assets/icons/google-icon.svg" alt="Google Logo" class="google-icon">
-            Continue with Google
-          </button>
-        </div>
-
-        @if (serverErrorMessage) {
-          <div class="global-error-box">
-            {{ serverErrorMessage }}
-          </div>
-        }
-
-      </div>
-    </div>
-  `,
+  templateUrl: './register-component.html',
   styleUrl: './register-component.css',
 })
 export class RegisterComponent {
@@ -171,7 +32,7 @@ export class RegisterComponent {
   
   serverErrorMessage: string | null = null;
 
-  private apiUrl: string = environment.apiURL;
+  private apiUrl: string = environment.authApiURL;
 
   // Initialize the form with all required inputs
   registerForm = new FormGroup({
@@ -213,7 +74,7 @@ export class RegisterComponent {
       };
 
       // Send a POST request to the new backend endpoint
-      this.http.post(`${this.apiUrl}/api/auth/register`, registerData)
+      this.http.post(`${this.apiUrl}register`, registerData)
         .subscribe({
           next: (response: any) => {
             // Redirect to the login page
@@ -248,7 +109,7 @@ export class RegisterComponent {
   }
 
   loginWithGoogle(): void {
-    window.location.href = `${this.apiUrl}/api/auth/login-google?provider=Google`;
+    window.location.href = `${this.apiUrl}login-google?provider=Google`;
   }
 
 }

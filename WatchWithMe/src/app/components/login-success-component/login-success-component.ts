@@ -5,11 +5,7 @@ import { AuthService } from '@services/auth-service/auth-service';
 @Component({
   selector: 'app-login-success',
   imports: [],
-  template: `
-    <h2>
-      Logging you in ...
-    </h2>
-  `,
+  templateUrl: './login-success-component.html',
   styleUrl: './login-success-component.css',
 })
 export class LoginSuccessComponent implements OnInit {

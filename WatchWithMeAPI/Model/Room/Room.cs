@@ -1,28 +1,39 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WatchWithMeAPI.Model;
-[Table("rooms")]
+
 public class Room
 {
 
-    public int? Id { get; set; }
+    public int Id { get; set; }
 
-    public string? ShareCode { get; set; }
+    public string ShareCode { get; set; } = null!;
 
-    public string? DisplayName { get; set; }
+    [Length(6, 30)]
+    public string DisplayName { get; set; } = null!;
 
-    public int? RoomSettingsId { get; set; }
+    // Navigation Property (The "One")
+    public RoomSettings RoomSettings { get; set; } = null!;
     
-    public RoomSettings? RoomSettings { get; set; }
+    // Navigation Property (The "One")
+    public RoomInstance RoomInstance { get; set; } = null!;
 
-    public int? HostId { get; set; }
+    // Foreign Key to User(Id)
+    public int HostId { get; set; }
+
+    public User Host { get; set; } = null!;
+
+    // Collection Navigation Property
+    public ICollection<RoomParticipant> RoomParticipants { get; set; } = new HashSet<RoomParticipant>();
     
-    public User? Host { get; set; }
-
-    public List<RoomParticipant>? ListOfCurrentParticipants { get; set; }
-
-    public RoomStatus? Status { get; set; }
+    // Foreign Key to RoomParticipant(Id)
+    public int CurrentControllerId { get; set; }
     
-    public DateTime? CreatedAt { get; set; }
+    public RoomParticipant CurrentController { get; set; } = null!;
+
+    public RoomStatus Status { get; set; } = RoomStatus.Active;
+    
+    public DateTime CreatedAt { get; set; }
     
 }

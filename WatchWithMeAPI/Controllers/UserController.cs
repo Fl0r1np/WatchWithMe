@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.JsonWebTokens;
 using WatchWithMeAPI.DTO;
 using WatchWithMeAPI.Model;
+using WatchWithMeAPI.ResponseRecords;
 using WatchWithMeAPI.Services;
 
 namespace WatchWithMeAPI.Controllers;
@@ -266,6 +267,39 @@ public class UserController : ControllerBase
         
         // User Status updated successfully
         return Ok(new { message = "User Status updated successfully!" });
+
+    }
+    
+    /// <summary>
+    /// A simple dashboard page to test the JWT 
+    /// </summary>
+    /// <returns>
+    /// JSON data contaning the user's info
+    /// </returns>
+    [HttpGet("dashboard")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [ProducesResponseType(typeof(DashboardResponse), StatusCodes.Status200OK)]
+    public async Task<ActionResult<UserAccountInfoResponseDTO>> GetDashboardData()
+    {
+        
+        // Get the currently logged-in user
+        var userEmail = User.FindFirstValue(JwtRegisteredClaimNames.Email);
+        var user = await _userManager.FindByEmailAsync(userEmail);
+
+        // Check if the user exists
+        if (user == null)
+        {
+            return NotFound("User not found");
+        }    
+
+        // Return user data
+        return new UserAccountInfoResponseDTO{
+            Username = user.UserName,
+            Email = user.Email,
+            ProfilePicture = user.ProfilePicture,
+            Status = user.Status.ToString(),
+            AuthMethod = user.AuthenticationMethod.ToString()
+            };
 
     }
     
