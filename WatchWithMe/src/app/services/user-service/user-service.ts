@@ -16,7 +16,8 @@ export class UserService {
     username: 'Username',
     email: 'user@example.com',
     profilePicture: `avatar-default.png`,
-    status: UserStatus.Online,
+    status: UserStatus.Public,
+    displayStatus: UserStatus.Online,
     authMethod: authMethod.BASIC
   });
 

@@ -6,5 +6,6 @@ export interface User {
   email: string;
   profilePicture: string;
   status: UserStatus;
+  displayStatus: UserStatus;
   authMethod: authMethod;
 }

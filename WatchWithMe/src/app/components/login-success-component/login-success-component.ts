@@ -29,7 +29,7 @@ export class LoginSuccessComponent implements OnInit {
         this.authService.saveToken(token);
 
         // Redirect to the home page
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/']);
 
       } else {
 

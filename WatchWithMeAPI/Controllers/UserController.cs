@@ -9,6 +9,7 @@ using WatchWithMeAPI.DTO;
 using WatchWithMeAPI.Model;
 using WatchWithMeAPI.ResponseRecords;
 using WatchWithMeAPI.Services;
+using WatchWithMeAPI.Utils;
 
 namespace WatchWithMeAPI.Controllers;
 
@@ -26,6 +27,9 @@ public class UserController : ControllerBase
     private readonly IValidator<PasswordUpdateRequestDTO> _validatorPasswordUpdateRequest;
     private readonly IValidator<UserNameUpdateRequestDTO> _validatorUserNameUpdateRequest;
     private readonly IValidator<StatusUpdateRequestDTO> _validatorStatusUpdateRequest;
+    
+    // Necessary constants
+    private const string USER_NOT_FOUND = "User not found!";
     
     /// <summary>
     /// Constructor of the class
@@ -84,7 +88,7 @@ public class UserController : ControllerBase
         // Check if the user exists
         if (user == null)
         {
-            return NotFound("User not found");
+            return NotFound(USER_NOT_FOUND);
         }
         
         // Validates the request
@@ -127,7 +131,7 @@ public class UserController : ControllerBase
         // Check if the user exists
         if (user == null)
         {
-            return NotFound("User not found");
+            return NotFound(USER_NOT_FOUND);
         }
 
         // Safely update the Email
@@ -171,7 +175,7 @@ public class UserController : ControllerBase
         // Check if the user exists
         if (user == null)
         {
-            return NotFound("User not found");
+            return NotFound(USER_NOT_FOUND);
         }
         
         // Try to change the password
@@ -217,7 +221,7 @@ public class UserController : ControllerBase
         // Check if the user exists
         if (user == null)
         {
-            return NotFound("User not found");
+            return NotFound(USER_NOT_FOUND);
         }
         
         // Try to update the UserName
@@ -253,11 +257,16 @@ public class UserController : ControllerBase
         // Check if the user exists
         if (user == null)
         {
-            return NotFound("User not found");
+            return NotFound(USER_NOT_FOUND);
         }
         
+        // Converting the string to the enum
+        var newStatus = request.Status.ToEnum(UserStatus.Public);
+        var newDisplayStatus = UserAccountUtils.ConvertToDisplayStatus(newStatus);
+        
         // Try to update the User Status
-        user.Status = UserStatus.Online;
+        user.Status = newStatus;
+        user.DisplayStatus = newDisplayStatus;
         var result = await _userManager.UpdateAsync(user);
 
         if (!result.Succeeded)
@@ -289,7 +298,7 @@ public class UserController : ControllerBase
         // Check if the user exists
         if (user == null)
         {
-            return NotFound("User not found");
+            return NotFound(USER_NOT_FOUND);
         }    
 
         // Return user data
@@ -298,6 +307,7 @@ public class UserController : ControllerBase
             Email = user.Email,
             ProfilePicture = user.ProfilePicture,
             Status = user.Status.ToString(),
+            DisplayStatus = user.DisplayStatus.ToString(),
             AuthMethod = user.AuthenticationMethod.ToString()
             };
 

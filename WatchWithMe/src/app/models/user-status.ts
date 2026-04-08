@@ -1,9 +1,9 @@
 export enum UserStatus {
     Public = 'Public',
     Private = 'Private',
-    DoNotDisturb = 'Do Not Disturb',
+    DoNotDisturb = 'DoNotDisturb',
     Online = 'Online',
     Offline = 'Offline',
-    InCall = 'In Call',
-    InRoom = 'In Room'
+    InCall = 'InCall',
+    InRoom = 'InRoom'
 }

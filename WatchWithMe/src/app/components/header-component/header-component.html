@@ -55,14 +55,14 @@
               <img [src]="getProfilePicture(user.profilePicture)" alt="User Avatar" class="user-menu-avatar">
               <div class="user-menu-info">
                 <span class="user-menu-name">{{user.username}}</span>
-                <span class="user-menu-status">{{user.status}}</span>
+                <span class="user-menu-status">{{ convertDisplayStatusToString(user.displayStatus)}}</span>
               </div>
             }
           </div>
 
            <div class="user-menu-dropdown">
               <ul class="user-menu-list">
-                <li class="user-menu-item"><a href="">Settings</a></li>
+                <li class="user-menu-item"><a href="/dashboard">Settings</a></li>
                 <li class="user-menu-item"><a href="">New Room</a></li>
                 <li class="user-menu-item"><button (click)="logout()" class="logout-button">Logout</button></li>
                 

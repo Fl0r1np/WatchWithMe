@@ -98,7 +98,7 @@
             <div class="item-row">
                 <div class="item-info">
                 <span class="item-label">Status</span>
-                <span class="item-value">{{ currentUser.status }}</span>
+                <span class="item-value">{{ convertDisplayStatusToString(currentUser.status) }}</span>
                 </div>
                 <button class="btn btn-secondary" (click)="openStatusModal()">Change</button>
             </div>

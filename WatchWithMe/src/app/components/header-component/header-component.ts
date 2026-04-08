@@ -7,7 +7,9 @@ import { UserService } from '@services/user-service/user-service';
 import { AsyncPipe } from '@angular/common';
 import { User } from '@app/models/user';
 import { Observable } from 'rxjs';
-import { ApiEndpoints } from '@app/utils/apiEndpoints';
+import { ApiEndpoints } from '@app/models/apiEndpoints';
+import { UserAccountUtils } from '@app/utils/UserAccountUtils';
+import { UserStatus } from '@app/models/user-status';
 
 @Component({
   selector: 'app-header-component',
@@ -86,6 +88,12 @@ export class HeaderComponent implements OnInit {
 
     return this.profilePicturesPath + filename;
 
+  }
+
+  convertDisplayStatusToString(status: UserStatus): string {
+
+    return UserAccountUtils.convertDisplayStatusToString(status);
+    
   }
 
 }

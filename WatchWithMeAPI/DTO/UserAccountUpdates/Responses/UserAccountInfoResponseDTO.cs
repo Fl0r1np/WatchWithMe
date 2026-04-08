@@ -8,6 +8,7 @@ public class UserAccountInfoResponseDTO
     public string? Email { get; set; }
     public string? ProfilePicture { get; set; }
     public string? Status { get; set; }
+    public string? DisplayStatus { get; set; }
     public string? AuthMethod { get; set; }
     
 }

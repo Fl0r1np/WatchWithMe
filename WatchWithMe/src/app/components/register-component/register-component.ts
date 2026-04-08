@@ -2,7 +2,7 @@ import { Component, ChangeDetectorRef} from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { ApiEndpoints } from '@app/utils/apiEndpoints';
+import { ApiEndpoints } from '@app/models/apiEndpoints';
 
 // Custom validator to check if passwords match
 export const passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {

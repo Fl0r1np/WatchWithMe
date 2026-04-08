@@ -8,7 +8,8 @@ import { User } from '@app/models/user';
 import { UserStatus } from '@app/models/user-status';
 import { authMethod } from '@app/models/auth-method';
 import { UserService } from '@app/services/user-service/user-service';
-import { ApiEndpoints } from '@app/utils/apiEndpoints';
+import { ApiEndpoints } from '@app/models/apiEndpoints';
+import { UserAccountUtils } from '@app/utils/UserAccountUtils';
 
 // Custom validator to check if new passwords match
 export const matchNewPasswordValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -45,7 +46,8 @@ export class DashboardComponent implements OnInit {
     username: 'Username',
     email: 'user@example.com',
     profilePicture: `${this.profilePicturesPath}avatar-default.png`,
-    status: UserStatus.Online,
+    status: UserStatus.Public,
+    displayStatus: UserStatus.Online,
     authMethod: authMethod.BASIC
   };
 
@@ -155,6 +157,7 @@ export class DashboardComponent implements OnInit {
             email: response.email || this.currentUser.email,
             profilePicture: response.profilePicture || this.currentUser.profilePicture,
             status: response.status || this.currentUser.status,
+            displayStatus: response.displayStatus || this.currentUser.displayStatus,
             authMethod: response.authMethod || this.currentUser.authMethod
           };
 
@@ -340,7 +343,7 @@ export class DashboardComponent implements OnInit {
     });
 
     // Create the request body
-    const requestBody = { status: this.selectedStatusTemp };
+    const requestBody = { status: this.selectedStatusTemp.toString() };
 
     // Try to update the status on the backend
     this.http.put(`${ApiEndpoints.updateUserStatus}`, requestBody, { headers })
@@ -466,5 +469,11 @@ export class DashboardComponent implements OnInit {
     return this.profilePicturesPath + filename;
 
   }
+
+   convertDisplayStatusToString(status: UserStatus): string {
+  
+      return UserAccountUtils.convertDisplayStatusToString(status);
+      
+    }
 
 }

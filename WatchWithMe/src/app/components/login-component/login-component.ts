@@ -3,7 +3,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { ApiEndpoints } from '@app/utils/apiEndpoints';
+import { ApiEndpoints } from '@app/models/apiEndpoints';
 
 @Component({
   selector: 'app-login-component',
