@@ -2,7 +2,7 @@ import { Component, ChangeDetectorRef} from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '@environments/environment.development';
+import { ApiEndpoints } from '@app/utils/apiEndpoints';
 
 // Custom validator to check if passwords match
 export const passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -31,8 +31,6 @@ export class RegisterComponent {
   isSubmitted: boolean = false;
   
   serverErrorMessage: string | null = null;
-
-  private apiUrl: string = environment.authApiURL;
 
   // Initialize the form with all required inputs
   registerForm = new FormGroup({
@@ -74,7 +72,7 @@ export class RegisterComponent {
       };
 
       // Send a POST request to the new backend endpoint
-      this.http.post(`${this.apiUrl}register`, registerData)
+      this.http.post(`${ApiEndpoints.register}`, registerData)
         .subscribe({
           next: (response: any) => {
             // Redirect to the login page
@@ -109,7 +107,7 @@ export class RegisterComponent {
   }
 
   loginWithGoogle(): void {
-    window.location.href = `${this.apiUrl}login-google?provider=Google`;
+    window.location.href = `${ApiEndpoints.loginGoogle}?provider=Google`;
   }
 
 }

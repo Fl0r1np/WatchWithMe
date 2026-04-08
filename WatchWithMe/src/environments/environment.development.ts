@@ -1,5 +1,7 @@
+// Variable containing the main endpoints info
 export const environment = {
-    authApiURL: 'https://localhost:7051/api/auth/',
-    userApiURL: 'https://localhost:7051/api/user/',
+    
+    apiDomain: 'https://localhost:7051',
     profilePicturesPath: '/assets/avatars/'
+
 };

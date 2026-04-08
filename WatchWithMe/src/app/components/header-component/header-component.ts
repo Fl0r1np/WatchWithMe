@@ -7,6 +7,7 @@ import { UserService } from '@services/user-service/user-service';
 import { AsyncPipe } from '@angular/common';
 import { User } from '@app/models/user';
 import { Observable } from 'rxjs';
+import { ApiEndpoints } from '@app/utils/apiEndpoints';
 
 @Component({
   selector: 'app-header-component',
@@ -15,9 +16,6 @@ import { Observable } from 'rxjs';
   styleUrl: './header-component.css',
 })
 export class HeaderComponent implements OnInit {
-
-  // Backend API URL
-  private apiUrl: string = environment.userApiURL;
 
   // Observable for user data
   currentUser$: Observable<User>;
@@ -56,7 +54,7 @@ export class HeaderComponent implements OnInit {
     });
 
     // Try to get the current user data from the backend
-    this.http.get<User>(`${this.apiUrl}dashboard`, { headers }).subscribe({
+    this.http.get<User>(`${ApiEndpoints.getUserInfo}`, { headers }).subscribe({
       next: (userData) => {
 
         // Set the user data in the UserService

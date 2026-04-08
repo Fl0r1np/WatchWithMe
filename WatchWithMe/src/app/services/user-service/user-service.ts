@@ -3,6 +3,7 @@ import { environment } from '@environments/environment.development';
 import { BehaviorSubject } from 'rxjs';
 import { User } from '@models/user';
 import { authMethod } from '@app/models/auth-method';
+import { UserStatus } from '@app/models/user-status';
 
   
 @Injectable({
@@ -15,7 +16,7 @@ export class UserService {
     username: 'Username',
     email: 'user@example.com',
     profilePicture: `avatar-default.png`,
-    status: 'Online',
+    status: UserStatus.Online,
     authMethod: authMethod.BASIC
   });
 

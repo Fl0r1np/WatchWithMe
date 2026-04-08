@@ -1,9 +1,10 @@
 import { authMethod } from './auth-method';
+import { UserStatus } from './user-status';
 
 export interface User {
   username: string;
   email: string;
   profilePicture: string;
-  status: string;
+  status: UserStatus;
   authMethod: authMethod;
 }

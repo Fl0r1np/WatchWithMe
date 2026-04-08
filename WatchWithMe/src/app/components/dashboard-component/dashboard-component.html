@@ -56,15 +56,6 @@
             <section class="content-section">
             
                 <h3 class="section-title">Account</h3>
-                
-                <!--
-                <header class="profile-header">
-                    <img [src]="getProfilePicture(currentUser.profilePicture)" alt="Profile Picture" class="profile-header-avatar">
-                    <h2 class="profile-header-username">{{ currentUser.name }}</h2>
-                </header>
-                
-                <div class="divider-line-horizontal"></div>
-                -->
 
                 <div class="item-row">
                     <div class="item-info">
@@ -224,13 +215,13 @@
     <div class="modal-card">
       <h3 class="modal-title">Select Status</h3>
       <div class="status-options">
-        <div class="status-option" [class.status-selected]="selectedStatusTemp === 'Online'" (click)="selectedStatusTemp = 'Online'">
-          <span class="status-indicator public"></span> Online
+        <div class="status-option" [class.status-selected]="selectedStatusTemp === userStatusOptions.Public" (click)="selectedStatusTemp = userStatusOptions.Public">
+          <span class="status-indicator public"></span> Public
         </div>
-        <div class="status-option" [class.status-selected]="selectedStatusTemp === 'Do not disturb'" (click)="selectedStatusTemp = 'Do not disturb'">
+        <div class="status-option" [class.status-selected]="selectedStatusTemp === userStatusOptions.DoNotDisturb" (click)="selectedStatusTemp = userStatusOptions.DoNotDisturb">
           <span class="status-indicator dnd"></span> Do not disturb
         </div>
-        <div class="status-option" [class.status-selected]="selectedStatusTemp === 'Away'" (click)="selectedStatusTemp = 'Private'">
+        <div class="status-option" [class.status-selected]="selectedStatusTemp === userStatusOptions.Private" (click)="selectedStatusTemp = userStatusOptions.Private">
           <span class="status-indicator private"></span> Private
         </div>
       </div>

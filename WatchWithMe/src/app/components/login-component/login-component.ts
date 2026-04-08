@@ -3,7 +3,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '@environments/environment.development';
+import { ApiEndpoints } from '@app/utils/apiEndpoints';
 
 @Component({
   selector: 'app-login-component',
@@ -27,9 +27,6 @@ export class LoginComponent {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)])
   });
-
-  // Backend API URL
-  private apiUrl: string = environment.authApiURL;
 
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef, private authService: AuthService) {}
 
@@ -97,7 +94,7 @@ export class LoginComponent {
        };
 
         // Send a POST request to the new backend endpoint
-      this.http.post(`${this.apiUrl}login`, loginData)
+      this.http.post(`${ApiEndpoints.login}`, loginData)
         .subscribe({
           next: (response: any) => {
 
@@ -142,7 +139,7 @@ export class LoginComponent {
   }
 
   loginWithGoogle(): void {
-    window.location.href = `${this.apiUrl}login-google?provider=Google`;
+    window.location.href = `${ApiEndpoints.loginGoogle}?provider=Google`;
   }
 
 }

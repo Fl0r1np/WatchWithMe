@@ -276,7 +276,7 @@ public class UserController : ControllerBase
     /// <returns>
     /// JSON data contaning the user's info
     /// </returns>
-    [HttpGet("dashboard")]
+    [HttpGet("user-info")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(DashboardResponse), StatusCodes.Status200OK)]
     public async Task<ActionResult<UserAccountInfoResponseDTO>> GetDashboardData()

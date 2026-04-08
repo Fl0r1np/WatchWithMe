@@ -2,11 +2,11 @@
 
 public enum UserStatus
 {
+    Public,
+    Private,
+    DoNotDisturb,
     Online,
     Offline,
-    Public,
-    DoNotDisturb,
     InCall,
-    InRoom,
-    
+    InRoom
 }

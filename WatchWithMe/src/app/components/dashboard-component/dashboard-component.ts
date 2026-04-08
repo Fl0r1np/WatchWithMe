@@ -5,8 +5,10 @@ import { ReactiveFormsModule, FormGroup, FormControl, Validators, AbstractContro
 import { environment } from '@environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '@app/models/user';
+import { UserStatus } from '@app/models/user-status';
 import { authMethod } from '@app/models/auth-method';
 import { UserService } from '@app/services/user-service/user-service';
+import { ApiEndpoints } from '@app/utils/apiEndpoints';
 
 // Custom validator to check if new passwords match
 export const matchNewPasswordValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -27,9 +29,6 @@ export const matchNewPasswordValidator: ValidatorFn = (control: AbstractControl)
 })
 export class DashboardComponent implements OnInit {
 
-  // Backend API URL
-  private apiUrl: string = environment.userApiURL;
-
   // Profile picture URL
   profilePicturesPath: string = environment.profilePicturesPath;
 
@@ -46,7 +45,7 @@ export class DashboardComponent implements OnInit {
     username: 'Username',
     email: 'user@example.com',
     profilePicture: `${this.profilePicturesPath}avatar-default.png`,
-    status: 'Online',
+    status: UserStatus.Online,
     authMethod: authMethod.BASIC
   };
 
@@ -70,7 +69,18 @@ export class DashboardComponent implements OnInit {
 
   // Temporary selections for modals (before hitting save)
   selectedProfilePicTemp: string = '';
-  selectedStatusTemp: string = '';
+  selectedStatusTemp: UserStatus = UserStatus.Online;
+
+  // Status options for the status modal
+  userStatusOptions = {
+    Public: UserStatus.Public,
+    Private: UserStatus.Private,
+    DoNotDisturb: UserStatus.DoNotDisturb,
+    Online: UserStatus.Online,
+    Offline: UserStatus.Offline,
+    InCall: UserStatus.InCall,
+    InRoom: UserStatus.InRoom
+  };
 
   // Reactive forms
   usernameForm = new FormGroup({
@@ -135,7 +145,7 @@ export class DashboardComponent implements OnInit {
     });
 
     // Get the user info 
-    this.http.get(`${this.apiUrl}dashboard`, { headers })
+    this.http.get(`${ApiEndpoints.getUserInfo}`, { headers })
       .subscribe({
         next: (response: any) => {
           
@@ -200,7 +210,7 @@ export class DashboardComponent implements OnInit {
       const requestBody = { userName: this.usernameForm.value.newUsername };
 
       // Try to update the username on the backend
-      this.http.put(`${this.apiUrl}update-username`, requestBody, { headers })
+      this.http.put(`${ApiEndpoints.updateUserUsername}`, requestBody, { headers })
         .subscribe({
           next: (response: any) => {
             
@@ -250,7 +260,7 @@ export class DashboardComponent implements OnInit {
       const requestBody = { email: this.emailForm.value.newEmail };
 
       // Try to update the email on the backend
-      this.http.put(`${this.apiUrl}update-email`, requestBody, { headers })
+      this.http.put(`${ApiEndpoints.updateUserEmail}`, requestBody, { headers })
         .subscribe({
           next: (response: any) => {
             // Inform the user about the successful update
@@ -290,7 +300,7 @@ export class DashboardComponent implements OnInit {
     const requestBody = { profilePictureFilename: this.selectedProfilePicTemp };
 
     // Try to update the profile picture on the backend
-    this.http.put(`${this.apiUrl}update-profile-picture`, requestBody, { headers })
+    this.http.put(`${ApiEndpoints.updateUserProfilePicture}`, requestBody, { headers })
       .subscribe({
         next: (response: any) => {
           // Inform the user about the successful update
@@ -333,7 +343,7 @@ export class DashboardComponent implements OnInit {
     const requestBody = { status: this.selectedStatusTemp };
 
     // Try to update the status on the backend
-    this.http.put(`${this.apiUrl}update-status`, requestBody, { headers })
+    this.http.put(`${ApiEndpoints.updateUserStatus}`, requestBody, { headers })
       .subscribe({
         next: (response: any) => {
           // Inform the user about the successful update
@@ -384,7 +394,7 @@ export class DashboardComponent implements OnInit {
       };
 
       // Try to update the password on the backend
-      this.http.put(`${this.apiUrl}update-password`, requestBody, { headers })
+      this.http.put(`${ApiEndpoints.updateUserPassword}`, requestBody, { headers })
         .subscribe({
           next: (response: any) => {
             // Inform the user about the successful update
