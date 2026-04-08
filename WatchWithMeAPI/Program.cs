@@ -134,6 +134,7 @@ builder.Services.AddScoped<IValidator<EmailUpdateRequestDTO>, EmailUpdateRequest
 builder.Services.AddScoped<IValidator<PasswordUpdateRequestDTO>, PasswordUpdateRequestValidator>();
 builder.Services.AddScoped<IValidator<UserNameUpdateRequestDTO>, UserNameUpdateRequestValidator>();
 builder.Services.AddScoped<IValidator<StatusUpdateRequestDTO>, StatusUpdateRequestValidator>();
+builder.Services.AddScoped<IValidator<DisplayStatusUpdateRequestDTO>, DisplayStatusUpdateRequestValidator>();
 
 // Ignore SSL Certificate Validation
 var httpClientHandler = new HttpClientHandler();

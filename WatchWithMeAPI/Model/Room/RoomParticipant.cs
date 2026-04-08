@@ -8,7 +8,7 @@ public class RoomParticipant
     public int UserId { get; set; }
 
     public User User { get; set; } = null!;
-    
+
     // Foreign key to Room(Id)
     public int RoomId { get; set; }
 

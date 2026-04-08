@@ -20,5 +20,6 @@ export const ApiEndpoints = {
     updateUserEmail: `${userControllerURL}/update-email`,
     updateUserProfilePicture: `${userControllerURL}/update-profile-picture`,
     updateUserPassword: `${userControllerURL}/update-password`,
-    updateUserStatus: `${userControllerURL}/update-status`
+    updateUserStatus: `${userControllerURL}/update-status`,
+    updateUserDisplayStatus: `${userControllerURL}/update-display-status`
 }

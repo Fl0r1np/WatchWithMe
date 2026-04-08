@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '@services/auth-service/auth-service';
+import { UserService } from '@app/services/user-service/user-service';
 
 @Component({
   selector: 'app-login-success',
@@ -12,6 +13,7 @@ export class LoginSuccessComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private userService: UserService,
     private router: Router,
     private route: ActivatedRoute
   ){}

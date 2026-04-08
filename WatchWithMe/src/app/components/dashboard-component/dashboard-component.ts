@@ -102,7 +102,8 @@ export class DashboardComponent implements OnInit {
   // Loading state
   isLoading = true;
 
-  constructor(private authService: AuthService,
+  constructor(
+    private authService: AuthService,
     private router: Router, 
     private http: HttpClient,
     private cdr: ChangeDetectorRef,

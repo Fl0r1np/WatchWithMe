@@ -1,4 +1,5 @@
 import { AuthService } from '@services/auth-service/auth-service';
+import { UserService } from '@app/services/user-service/user-service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
@@ -28,7 +29,14 @@ export class LoginComponent {
     password: new FormControl('', [Validators.required, Validators.minLength(8)])
   });
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient, 
+    private route: ActivatedRoute, 
+    private router: Router, 
+    private cdr: ChangeDetectorRef, 
+    private authService: AuthService,
+    private userService: UserService
+  ) {}
 
   // Checking if there is a query parameter indicating a error from the backend
   ngOnInit(): void {
@@ -103,8 +111,8 @@ export class LoginComponent {
             // Setting the token
             this.authService.saveToken(response.accessToken);
 
-            // Redirecting to the dashboard
-            this.router.navigate(['/dashboard']);
+            // Redirecting to the main page
+            this.router.navigate(['/']);
 
           },
           error: (err) => {
