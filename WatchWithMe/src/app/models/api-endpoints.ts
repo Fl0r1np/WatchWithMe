@@ -1,9 +1,10 @@
 import { environment } from "@environments/environment"
 
 // Variable containing the main endpoints info
-const apiDomain = environment.apiDomain;
-const userControllerURL = `${apiDomain}/api/user`;
-const authControllerURL = `${apiDomain}/api/auth`;
+const apiDomain = `${environment.apiDomain}/api`;
+const userControllerURL = `${apiDomain}/user`;
+const authControllerURL = `${apiDomain}/auth`;
+const assetsControllerURL = `${apiDomain}/assets`;
 
 
 export const ApiEndpoints = {
@@ -21,5 +22,10 @@ export const ApiEndpoints = {
     updateUserProfilePicture: `${userControllerURL}/update-profile-picture`,
     updateUserPassword: `${userControllerURL}/update-password`,
     updateUserStatus: `${userControllerURL}/update-status`,
-    updateUserDisplayStatus: `${userControllerURL}/update-display-status`
+    updateUserDisplayStatus: `${userControllerURL}/update-display-status`,
+    updateNotificationOptions: `${userControllerURL}/update-notification-options`,
+
+    // Endpoints for handling assets
+    getAvatarList: `${assetsControllerURL}/avatars`
+
 }

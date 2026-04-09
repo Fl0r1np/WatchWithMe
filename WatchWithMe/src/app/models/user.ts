@@ -8,4 +8,6 @@ export interface User {
   status: UserStatus;
   displayStatus: UserStatus;
   authMethod: authMethod;
+  notifyBasic: boolean;
+  notifyInvitations: boolean;
 }

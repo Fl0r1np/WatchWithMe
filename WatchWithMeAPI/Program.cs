@@ -135,6 +135,7 @@ builder.Services.AddScoped<IValidator<PasswordUpdateRequestDTO>, PasswordUpdateR
 builder.Services.AddScoped<IValidator<UserNameUpdateRequestDTO>, UserNameUpdateRequestValidator>();
 builder.Services.AddScoped<IValidator<StatusUpdateRequestDTO>, StatusUpdateRequestValidator>();
 builder.Services.AddScoped<IValidator<DisplayStatusUpdateRequestDTO>, DisplayStatusUpdateRequestValidator>();
+builder.Services.AddScoped<IValidator<NotificationOptionsUpdateRequestDTO>, NotificationOptionsRequestValidator>();
 
 // Ignore SSL Certificate Validation
 var httpClientHandler = new HttpClientHandler();
@@ -165,6 +166,9 @@ app.UseAuthentication();
 
 // Checks if the identified user has the right permissions to access the requested URL 
 app.UseAuthorization();
+
+// Allows the use of "wwwroot" folder
+app.UseStaticFiles();
 
 // Routes the request to your controller classes
 app.MapControllers();

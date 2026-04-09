@@ -29,6 +29,7 @@ public class UserController : ControllerBase
     private readonly IValidator<UserNameUpdateRequestDTO> _validatorUserNameUpdateRequest;
     private readonly IValidator<StatusUpdateRequestDTO> _validatorStatusUpdateRequest;
     private readonly IValidator<DisplayStatusUpdateRequestDTO> _validatorDisplayStatusUpdateRequest;
+    private readonly IValidator<NotificationOptionsUpdateRequestDTO> _validatorNotificationOptionsUpdateRequest;
 
     // Necessary constants
     private const string USER_NOT_FOUND = "User not found!";
@@ -57,6 +58,9 @@ public class UserController : ControllerBase
     /// <param name="validatorDisplayStatusUpdateRequest">
     /// Validator for the new Display Status
     /// </param>
+    /// <param name="validatorNotificationOptionsUpdateRequest">
+    /// Validator for the new Notification Options
+    /// </param>
     public UserController(
         UserManager<User> userManager,
         IValidator<ProfilePictureUpdateRequestDTO> validatorProfilePictureRequest,
@@ -64,8 +68,8 @@ public class UserController : ControllerBase
         IValidator<PasswordUpdateRequestDTO> validatorPasswordUpdateRequest,
         IValidator<UserNameUpdateRequestDTO> validatorUserNameUpdateRequest,
         IValidator<StatusUpdateRequestDTO> validatorStatusUpdateRequest,
-        IValidator<DisplayStatusUpdateRequestDTO> validatorDisplayStatusUpdateRequest
-    )
+        IValidator<DisplayStatusUpdateRequestDTO> validatorDisplayStatusUpdateRequest,
+        IValidator<NotificationOptionsUpdateRequestDTO> validatorNotificationOptionsUpdateRequest)
     {
 
         // Asing the necessary services to the class
@@ -78,6 +82,7 @@ public class UserController : ControllerBase
         _validatorUserNameUpdateRequest = validatorUserNameUpdateRequest;
         _validatorStatusUpdateRequest = validatorStatusUpdateRequest;
         _validatorDisplayStatusUpdateRequest = validatorDisplayStatusUpdateRequest;
+        _validatorNotificationOptionsUpdateRequest = validatorNotificationOptionsUpdateRequest;
 
     }
 
@@ -336,7 +341,55 @@ public class UserController : ControllerBase
         
     }
 
-/// <summary>
+    [HttpPut("update-notification-options")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public async Task<IActionResult> UpdateNotificationOptions(NotificationOptionsUpdateRequestDTO request)
+    {
+        
+        // Validate the request
+        var validationResult = await _validatorNotificationOptionsUpdateRequest.ValidateAsync(request);
+
+        if (!validationResult.IsValid)
+        {
+            return ValidationProblem(new ValidationProblemDetails(validationResult.ToDictionary()));
+        }
+        
+        // Get the currently logged-in user
+        var userEmail = User.FindFirstValue(JwtRegisteredClaimNames.Email);
+        var user = await _userManager.FindByEmailAsync(userEmail);
+        
+        // Check if the user exists
+        if (user == null)
+        {
+            return NotFound(USER_NOT_FOUND);
+        }
+        
+        // Convert the string to bool
+        var notifyBasic = request.NotifyBasic;
+        var notifyInvitations = request.NotifyInvitations;
+        
+        // Verify if the user already has these notification options 
+        if (user.NotifyBasic.Equals(notifyBasic) && user.NotifyInvitations.Equals(notifyInvitations))
+        {
+            return Ok(new { message = "These notification options are already set!" });
+        }
+        
+        // Try to update the notification options
+        user.NotifyBasic = notifyBasic;
+        user.NotifyInvitations = notifyInvitations;
+        var result = await _userManager.UpdateAsync(user);
+        
+        if (!result.Succeeded)
+        {
+            return BadRequest("There was a problem updating the notification options!");
+        }
+        
+        // Notification options updated successfully
+        return Ok(new { message = "Notification options updated successfully!" });
+        
+    }
+
+    /// <summary>
     /// A simple dashboard page to test the JWT 
     /// </summary>
     /// <returns>
@@ -345,7 +398,7 @@ public class UserController : ControllerBase
     [HttpGet("user-info")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(DashboardResponse), StatusCodes.Status200OK)]
-    public async Task<ActionResult<UserAccountInfoResponseDTO>> GetDashboardData()
+    public async Task<ActionResult<UserAccountInfoResponseDTO>> GetUserInfo()
     {
         
         // Get the currently logged-in user
@@ -365,7 +418,9 @@ public class UserController : ControllerBase
             ProfilePicture = user.ProfilePicture,
             Status = user.Status.ToString(),
             DisplayStatus = user.DisplayStatus.ToString(),
-            AuthMethod = user.AuthenticationMethod.ToString()
+            AuthMethod = user.AuthenticationMethod.ToString(),
+            NotifyBasic = user.NotifyBasic,
+            NotifyInvitations = user.NotifyInvitations,
             };
 
     }

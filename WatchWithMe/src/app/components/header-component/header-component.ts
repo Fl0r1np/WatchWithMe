@@ -7,9 +7,10 @@ import { UserService } from '@services/user-service/user-service';
 import { AsyncPipe } from '@angular/common';
 import { User } from '@app/models/user';
 import { Observable } from 'rxjs';
-import { ApiEndpoints } from '@app/models/apiEndpoints';
+import { ApiEndpoints } from '@app/models/api-endpoints';
 import { UserAccountUtils } from '@app/utils/UserAccountUtils';
 import { UserStatus } from '@app/models/user-status';
+import { AssetsPaths } from '@app/models/assets-paths';
 
 @Component({
   selector: 'app-header-component',
@@ -24,9 +25,6 @@ export class HeaderComponent implements OnInit {
 
   // Active Tab State for the Inbox
   activeInboxTab: 'notifications' | 'invites' = 'notifications';
-
-  // Profile Pictures location
-  profilePicturesPath: string = environment.profilePicturesPath;
 
   constructor(
     public authService: AuthService, 
@@ -83,10 +81,10 @@ export class HeaderComponent implements OnInit {
   getProfilePicture(filename: string | null | undefined): string {
 
     if (!filename) {
-      return this.profilePicturesPath + 'avatar-default.png';
+      return AssetsPaths.avatars + 'avatar-default.png';
     }
 
-    return this.profilePicturesPath + filename;
+    return AssetsPaths.avatars + filename;
 
   }
 

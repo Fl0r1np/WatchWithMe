@@ -8,8 +8,11 @@ import { User } from '@app/models/user';
 import { UserStatus } from '@app/models/user-status';
 import { authMethod } from '@app/models/auth-method';
 import { UserService } from '@app/services/user-service/user-service';
-import { ApiEndpoints } from '@app/models/apiEndpoints';
+import { ApiEndpoints } from '@app/models/api-endpoints';
 import { UserAccountUtils } from '@app/utils/UserAccountUtils';
+import { NotificationType } from '@app/models/notification-type';
+import { DashboadTabType } from '@app/models/dashboard-tab-type';
+import { AssetsPaths } from '@app/models/assets-paths';
 
 // Custom validator to check if new passwords match
 export const matchNewPasswordValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -30,25 +33,19 @@ export const matchNewPasswordValidator: ValidatorFn = (control: AbstractControl)
 })
 export class DashboardComponent implements OnInit {
 
-  // Profile picture URL
-  profilePicturesPath: string = environment.profilePicturesPath;
-
-  presetProfilePictures: string[] = [
-    'avatar-1.png',
-    'avatar-2.png',
-    'avatar-3.png',
-    'avatar-4.png',
-    'avatar-5.png'
-  ];
+  // Preset for avatars
+  presetAvatars: string[] = [];
 
   // User info
   currentUser: User = {
     username: 'Username',
     email: 'user@example.com',
-    profilePicture: `${this.profilePicturesPath}avatar-default.png`,
+    profilePicture: `${AssetsPaths.avatars}avatar-default.png`,
     status: UserStatus.Public,
     displayStatus: UserStatus.Online,
-    authMethod: authMethod.BASIC
+    authMethod: authMethod.BASIC,
+    notifyBasic: true,
+    notifyInvitations: true
   };
 
   // Tracks if we are looking at the list or the content on mobile
@@ -56,7 +53,11 @@ export class DashboardComponent implements OnInit {
   isMobile: boolean = false;
 
   // Navigation State
-  activeTab: 'account' | 'notifications' = 'account';
+  activeTab: DashboadTabType = DashboadTabType.Account;
+  activeTabTypes = {
+    Account: DashboadTabType.Account,
+    Notifications: DashboadTabType.Notifications
+  };
 
   // Notification Preferences
   notifyInvitations: boolean = true;
@@ -82,6 +83,12 @@ export class DashboardComponent implements OnInit {
     Offline: UserStatus.Offline,
     InCall: UserStatus.InCall,
     InRoom: UserStatus.InRoom
+  };
+
+  // Notification types
+  notificationTypes = {
+    Basic: NotificationType.Basic,
+    Invitations: NotificationType.Invitations
   };
 
   // Reactive forms
@@ -116,6 +123,11 @@ export class DashboardComponent implements OnInit {
 
     // Load user data from backend when component initializes
     this.loadUserData();
+    
+    // Load the avatars
+    this.loadAvatars();
+
+    console.log(this.presetAvatars);
 
   }
 
@@ -151,19 +163,25 @@ export class DashboardComponent implements OnInit {
     this.http.get(`${ApiEndpoints.getUserInfo}`, { headers })
       .subscribe({
         next: (response: any) => {
-          
+
           // Update the currentUser object with data from backend (using defaults if any field is missing)
           this.currentUser = {
-            username: response.username || this.currentUser.username,
-            email: response.email || this.currentUser.email,
-            profilePicture: response.profilePicture || this.currentUser.profilePicture,
-            status: response.status || this.currentUser.status,
-            displayStatus: response.displayStatus || this.currentUser.displayStatus,
-            authMethod: response.authMethod || this.currentUser.authMethod
+            username: response.username ?? this.currentUser.username,
+            email: response.email ?? this.currentUser.email,
+            profilePicture: response.profilePicture ?? this.currentUser.profilePicture,
+            status: response.status ?? this.currentUser.status,
+            displayStatus: response.displayStatus ?? this.currentUser.displayStatus,
+            authMethod: response.authMethod ?? this.currentUser.authMethod,
+            notifyBasic: response.notifyBasic ?? this.currentUser.notifyBasic,
+            notifyInvitations: response.notifyInvitations ?? this.currentUser.notifyInvitations
           };
 
           // Notify the observers with the updated user data
           this.userService.updateUser(this.currentUser);
+
+          // Setting the options
+          this.notifyBasic = this.currentUser.notifyBasic;
+          this.notifyInvitations = this.currentUser.notifyInvitations;
 
           // Set loading state to false after data is loaded
           this.isLoading = false;
@@ -175,11 +193,30 @@ export class DashboardComponent implements OnInit {
           this.cdr.detectChanges();
         }
       });
+
   }
   
+  // Method to load all available avatars
+  loadAvatars(): void{
+
+    // Try to get a list with all available avatars
+    this.http.get<string[]>(`${ApiEndpoints.getAvatarList}`)
+      .subscribe({
+        next: (filenames : any) => {
+          this.presetAvatars = filenames;
+        },
+        error: (err: any) => {
+          console.log(err);
+        }
+      });
+
+  }
+
   // Tab switching logic
-  switchTab(tab: 'account' | 'notifications'): void {
+  switchTab(tab: DashboadTabType): void {
     this.activeTab = tab;
+
+
     if (this.isMobile) {
       this.mobileViewMode = 'content';
     }
@@ -222,7 +259,7 @@ export class DashboardComponent implements OnInit {
             console.log(response.message);
 
             // Update the username in the currentUser object
-            this.currentUser.username = this.usernameForm.value.newUsername || this.currentUser.username;
+            this.currentUser.username = this.usernameForm.value.newUsername ?? this.currentUser.username;
 
             // Notify the observers
             this.userService.updateUser(this.currentUser);
@@ -311,7 +348,7 @@ export class DashboardComponent implements OnInit {
           console.log(response.message);
 
           // Update the profile picture in the currentUser object
-          this.currentUser.profilePicture = this.selectedProfilePicTemp || this.currentUser.profilePicture;
+          this.currentUser.profilePicture = this.selectedProfilePicTemp ?? this.currentUser.profilePicture;
           
           // Notify the observers
           this.userService.updateUser(this.currentUser);
@@ -354,7 +391,7 @@ export class DashboardComponent implements OnInit {
           console.log(response.message);
 
           // Update the status in the currentUser object
-          this.currentUser.status = this.selectedStatusTemp || this.currentUser.status;
+          this.currentUser.status = this.selectedStatusTemp ?? this.currentUser.status;
           
           // Notify the observers
           this.userService.updateUser(this.currentUser);
@@ -438,12 +475,56 @@ export class DashboardComponent implements OnInit {
   }
 
   // Toggle notification checkboxes
-  toggleNotification(type: 'invitations' | 'basic'): void {
-    if (type === 'invitations') {
+  toggleNotification(type: NotificationType): void {
+    
+    // Change the selected option
+    if (type === NotificationType.Invitations) {
       this.notifyInvitations = !this.notifyInvitations;
-    } else if (type === 'basic') {
+    } else if (type === NotificationType.Basic) {
       this.notifyBasic = !this.notifyBasic;
     }
+
+    // Save the options
+    this.saveNotification();
+
+  }
+
+  // Method to save the selected notification options 
+  saveNotification(){
+
+    // Grab the token from storage
+    const token = localStorage.getItem('auth_token');
+
+    // Create the headers
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    console.log("request: " + this.notifyBasic + " " + this.notifyInvitations);
+
+    // Create the request body
+    const requestBody = { 
+      notifyBasic: this.notifyBasic,
+      notifyInvitations: this.notifyInvitations 
+    };
+
+    // Try to update the options
+    this.http.put(`${ApiEndpoints.updateNotificationOptions}`, requestBody, {headers})
+      .subscribe({
+          next: (response: any) => {
+            // Inform the user about the successful update
+            console.log(response.message);  
+
+            // Refresh the Front-End
+            this.loadUserData();
+          },
+          error: (err: any) => {
+            // Inform the user about the error 
+            console.error(err);
+            alert(err.error.errors.notifyBasic + "\n" + err.error.errors.notifyInvitations);
+          }
+        });
+
   }
 
   // Logout logic
@@ -464,10 +545,10 @@ export class DashboardComponent implements OnInit {
   getProfilePicture(filename: string | null | undefined): string {
 
     if (!filename) {
-      return this.profilePicturesPath + 'avatar-default.png';
+      return AssetsPaths.avatars + 'avatar-default.png';
     }
 
-    return this.profilePicturesPath + filename;
+    return AssetsPaths.avatars + filename;
 
   }
 

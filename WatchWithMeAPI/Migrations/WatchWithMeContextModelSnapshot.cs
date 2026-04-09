@@ -405,6 +405,12 @@ namespace WatchWithMeAPI.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<bool>("NotifyBasic")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("NotifyInvitations")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 

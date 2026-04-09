@@ -27,6 +27,49 @@
 
   <ItemGroup>
     <Folder Include="Repository\" />
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\assets\avatars\avatar-1.png" />
+    <None Include="wwwroot\assets\avatars\avatar-10.png" />
+    <None Include="wwwroot\assets\avatars\avatar-11.png" />
+    <None Include="wwwroot\assets\avatars\avatar-12.png" />
+    <None Include="wwwroot\assets\avatars\avatar-13.png" />
+    <None Include="wwwroot\assets\avatars\avatar-14.png" />
+    <None Include="wwwroot\assets\avatars\avatar-15.png" />
+    <None Include="wwwroot\assets\avatars\avatar-16.png" />
+    <None Include="wwwroot\assets\avatars\avatar-17.png" />
+    <None Include="wwwroot\assets\avatars\avatar-18.png" />
+    <None Include="wwwroot\assets\avatars\avatar-19.png" />
+    <None Include="wwwroot\assets\avatars\avatar-2.png" />
+    <None Include="wwwroot\assets\avatars\avatar-20.png" />
+    <None Include="wwwroot\assets\avatars\avatar-21.png" />
+    <None Include="wwwroot\assets\avatars\avatar-22.png" />
+    <None Include="wwwroot\assets\avatars\avatar-23.png" />
+    <None Include="wwwroot\assets\avatars\avatar-24.png" />
+    <None Include="wwwroot\assets\avatars\avatar-25.png" />
+    <None Include="wwwroot\assets\avatars\avatar-26.png" />
+    <None Include="wwwroot\assets\avatars\avatar-27.png" />
+    <None Include="wwwroot\assets\avatars\avatar-28.png" />
+    <None Include="wwwroot\assets\avatars\avatar-29.png" />
+    <None Include="wwwroot\assets\avatars\avatar-3.png" />
+    <None Include="wwwroot\assets\avatars\avatar-30.png" />
+    <None Include="wwwroot\assets\avatars\avatar-31.png" />
+    <None Include="wwwroot\assets\avatars\avatar-32.png" />
+    <None Include="wwwroot\assets\avatars\avatar-33.png" />
+    <None Include="wwwroot\assets\avatars\avatar-34.png" />
+    <None Include="wwwroot\assets\avatars\avatar-35.png" />
+    <None Include="wwwroot\assets\avatars\avatar-36.png" />
+    <None Include="wwwroot\assets\avatars\avatar-37.png" />
+    <None Include="wwwroot\assets\avatars\avatar-38.png" />
+    <None Include="wwwroot\assets\avatars\avatar-4.png" />
+    <None Include="wwwroot\assets\avatars\avatar-5.png" />
+    <None Include="wwwroot\assets\avatars\avatar-6.png" />
+    <None Include="wwwroot\assets\avatars\avatar-7.png" />
+    <None Include="wwwroot\assets\avatars\avatar-8.png" />
+    <None Include="wwwroot\assets\avatars\avatar-9.png" />
+    <None Include="wwwroot\assets\avatars\avatar-default.png" />
   </ItemGroup>
 
 </Project>

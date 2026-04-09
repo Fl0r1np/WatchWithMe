@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { User } from '@models/user';
 import { authMethod } from '@app/models/auth-method';
 import { UserStatus } from '@app/models/user-status';
-import { ApiEndpoints } from '@app/models/apiEndpoints';
+import { ApiEndpoints } from '@app/models/api-endpoints';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
   
@@ -20,7 +20,9 @@ export class UserService {
     profilePicture: `avatar-default.png`,
     status: UserStatus.Public,
     displayStatus: UserStatus.Online,
-    authMethod: authMethod.BASIC
+    authMethod: authMethod.BASIC,
+    notifyBasic: true,
+    notifyInvitations: true
   });
 
   // Expose the user data as an observable for components to subscribe to
@@ -59,7 +61,7 @@ export class UserService {
           // Update the user source if a user is given 
           if (currentUser !== null){  
             // Update the status in the currentUser object
-            currentUser.displayStatus = newDisplayStatus || currentUser.status;
+            currentUser.displayStatus = newDisplayStatus ?? currentUser.status;
           
             // Notify the observers
             this.updateUser(currentUser);

@@ -4,8 +4,8 @@
     <div class="sidebar-menu">
       <button 
         class="sidebar-btn" 
-        [class.sidebar-btn-active]="activeTab === 'account' && !isMobile"
-        (click)="switchTab('account')">
+        [class.sidebar-btn-active]="activeTab === activeTabTypes.Account && !isMobile"
+        (click)="switchTab(activeTabTypes.Account)">
         <div class="sidebar-btn-left">
           <img src="assets/icons/account-icon.png" alt="Account Sidebar Icon" class="sidebar-icon">
           <span>Account</span>
@@ -14,8 +14,8 @@
       </button>
       <button 
         class="sidebar-btn" 
-        [class.sidebar-btn-active]="activeTab === 'notifications' && !isMobile"
-        (click)="switchTab('notifications')">
+        [class.sidebar-btn-active]="activeTab === activeTabTypes.Notifications"
+        (click)="switchTab(activeTabTypes.Notifications)">
         <div class="sidebar-btn-left">
             <img src="assets/icons/notifications-icon.png" alt="Notifications Sidebar Icon" class="sidebar-icon">
             <span>Notifications</span>
@@ -43,7 +43,7 @@
       </button>
     }
 
-    @if (activeTab === 'account') {
+    @if (activeTab === activeTabTypes.Account) {
       <div class="tab-container">
         
         @if (isLoading){
@@ -130,18 +130,18 @@
         </div>
     }
 
-    @if (activeTab === 'notifications') {
+    @if (activeTab === activeTabTypes.Notifications) {
       <div class="tab-container">
         <section class="content-section">
 
             <h3 class="section-title">Notification Settings</h3>
 
-            <div class="item-row checkbox-row" (click)="toggleNotification('invitations')">
+            <div class="item-row checkbox-row" (click)="toggleNotification(notificationTypes.Invitations)">
                 <span class="item-label">Notify me about invitations</span>
                 <div class="custom-checkbox" [class.checkbox-checked]="notifyInvitations"></div>
             </div>
 
-            <div class="item-row checkbox-row" (click)="toggleNotification('basic')">
+            <div class="item-row checkbox-row" (click)="toggleNotification(notificationTypes.Basic)">
                 <span class="item-label">Notify me about basic notifications</span>
                 <div class="custom-checkbox" [class.checkbox-checked]="notifyBasic"></div>
             </div>
@@ -193,7 +193,7 @@
     <div class="modal-card">
       <h3 class="modal-title">Select Profile Picture</h3>
       <div class="preset-grid">
-        @for (avatar of presetProfilePictures; track avatar) {
+        @for (avatar of presetAvatars; track avatar) {
           <img 
             [src]="getProfilePicture(avatar)" 
             alt="Preset Avatar" 

@@ -2,6 +2,5 @@
 export const environment = {
     
     apiDomain: 'https://localhost:7051',
-    profilePicturesPath: '/assets/avatars/'
 
 };

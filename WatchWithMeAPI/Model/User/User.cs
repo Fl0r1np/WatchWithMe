@@ -12,6 +12,11 @@ namespace WatchWithMeAPI.Model
 
         public AuthMethod AuthenticationMethod { get; set; } = AuthMethod.Basic;
 
+        public bool NotifyBasic { get; set; } = true;
+        
+        public bool NotifyInvitations { get; set; } = true;
+
+
         // Collection Navigation Property
         // public ICollection<RoomParticipant> Participants { get; set; } = new HashSet<RoomParticipant>();
 

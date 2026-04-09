@@ -327,7 +327,7 @@
   border-radius: 12px;
   padding: 2rem;
   width: 100%;
-  max-width: 400px;
+  max-width: 40%;
   box-shadow: var(--shadow-dark);
   animation: fadeIn 0.2s ease-out;
 }
@@ -349,9 +349,42 @@
 
 .preset-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 1rem;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 8px;
+
+  /* Standard for Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-purple) transparent;
+
 }
+
+/* Chrome, Edge, and Safari */
+.preset-grid::-webkit-scrollbar {
+  width: 6px; /* Sleek and thin */
+}
+
+.preset-grid::-webkit-scrollbar-track {
+  background: transparent; /* Keeps the background clean */
+}
+
+.preset-grid::-webkit-scrollbar-thumb {
+  background-color: var(--primary-purple);
+  border-radius: 20px; /* Fully rounded edges */
+  transition: background-color 0.2s ease;
+}
+
+.preset-grid::-webkit-scrollbar-thumb:hover {
+  background-color: var(--primary-hover); /* Lighter purple on hover */
+}
+
+/* Adding a slight margin to the scrollbar so it doesn't stick to the edge */
+.preset-grid::-webkit-scrollbar-thumb {
+  border: 1px solid var(--bg-surface); /* Creates a tiny gap effect */
+}
+
 
 .preset-img {
   width: 100%;
@@ -492,8 +525,15 @@
 
 
 /* ===========================
-   RESPONSIVE DESIGN (MOBILE)
+   RESPONSIVE DESIGN
    =========================== */
+
+@media (max-width: 1024px) {
+  .preset-grid{
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .dashboard-layout {
     flex-direction: column;
@@ -533,4 +573,21 @@
     max-width: none;
   }
 
+  .preset-grid{
+    grid-template-columns: repeat(4, 1fr);
+  }
+
 }
+
+@media (max-width: 426px) {
+  .preset-grid{
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 321px) {
+  .preset-grid{
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+

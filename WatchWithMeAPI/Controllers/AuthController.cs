@@ -1,17 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using WatchWithMeAPI.DTO;
 using WatchWithMeAPI.Model;
-using WatchWithMeAPI.ResponseRecords;
 using WatchWithMeAPI.Services;
 
 namespace Controllers

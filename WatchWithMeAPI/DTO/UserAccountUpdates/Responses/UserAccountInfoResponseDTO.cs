@@ -10,5 +10,7 @@ public class UserAccountInfoResponseDTO
     public string? Status { get; set; }
     public string? DisplayStatus { get; set; }
     public string? AuthMethod { get; set; }
+    public bool? NotifyBasic { get; set; }
+    public bool? NotifyInvitations { get; set; }
     
 }
