@@ -212,3 +212,4 @@ C:\Users\flori\Documents\Proiect-WatchWithMe\WatchWithMeAPI\bin\Debug\net9.0\Swa
 C:\Users\flori\Documents\Proiect-WatchWithMe\WatchWithMeAPI\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\flori\Documents\Proiect-WatchWithMe\WatchWithMeAPI\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\flori\Documents\Proiect-WatchWithMe\WatchWithMeAPI\bin\Debug\net9.0\FluentValidation.dll
+C:\Users\flori\Documents\Proiect-WatchWithMe\WatchWithMeAPI\bin\Debug\net9.0\WatchWithMeAPI.staticwebassets.runtime.json

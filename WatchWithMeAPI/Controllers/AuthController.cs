@@ -1,17 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using WatchWithMeAPI.DTO;
 using WatchWithMeAPI.Model;
-using WatchWithMeAPI.ResponseRecords;
 using WatchWithMeAPI.Services;
 
 namespace Controllers
@@ -94,14 +85,14 @@ namespace Controllers
         /// <summary>
         /// Handles the basic registration request
         /// </summary>
-        /// <param name="registerRequest">
+        /// <param name="registerRequestRequest">
         /// DTO containing the user data
         /// </param>
         /// <returns>
         /// Returns a JSON data as a response
         /// </returns>
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDTO registerRequest)
+        public async Task<IActionResult> Register([FromBody] RegisterRequestDTO registerRequestRequest)
         {
 
             // Check if the incoming data passed the validation rules in the DTO
@@ -113,14 +104,14 @@ namespace Controllers
             // Create the new user object
             var user = new User
             {
-                UserName = registerRequest.Username,
-                Email = registerRequest.Email,
+                UserName = registerRequestRequest.Username,
+                Email = registerRequestRequest.Email,
             };
 
 
 
             // Save the user and hash their password in one step
-            var result = await _userManager.CreateAsync(user, registerRequest.Password);
+            var result = await _userManager.CreateAsync(user, registerRequestRequest.Password);
 
             if (result.Succeeded)
             {
@@ -243,7 +234,7 @@ namespace Controllers
             }
 
             // Generate JWT
-            var jwtResponse = _jwtService.GenerateToken(user);
+            var jwtResponse = _jwtService.GenerateToken(user, AuthMethod.Google);
             var frontendUrl = _configuration["FrontendSettings:BaseUrl"];
             return Redirect($"{frontendUrl}/login-success?token={jwtResponse.AccessToken}");
         }
@@ -261,31 +252,6 @@ namespace Controllers
         {
             var frontendUrl = _configuration["FrontendSettings:BaseUrl"];
             return Redirect($"{frontendUrl}/login?error={error}");
-        }
-
-        /// <summary>
-        /// A simple dashboard page to test the JWT 
-        /// </summary>
-        /// <returns>
-        /// JSON data contaning the user's info
-        /// </returns>
-        [HttpGet("dashboard")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [ProducesResponseType(typeof(DashboardResponse), StatusCodes.Status200OK)]
-        public IActionResult GetDashboardData()
-        {
-
-            var userEmail = User.FindFirstValue(JwtRegisteredClaimNames.Email) ?? "Email";
-            var userName = User.FindFirstValue(JwtRegisteredClaimNames.GivenName) ?? "Username";
-
-            return Ok(
-                new DashboardResponse(
-                    $"Welcome to the Dashboard, {userName}!",
-                    userEmail,
-                    "Here is the private data only logged-in users can see."
-
-                ));
-
         }
 
     }

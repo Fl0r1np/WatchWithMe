@@ -2,23 +2,26 @@
 
 public class CallSession
 {
-    public int? Id { get; set; }
+    public int Id { get; set; }
 
-    public int? ChatId { get; set; }
+    // Foreign Key to Chat(Id)
+    public int ChatId { get; set; }
 
-    public Chat? Chat { get; set; }
+    public Chat Chat { get; set; } = null!;
 
-    public int? InitiatorId { get; set; }
-    
-    public User? Initiator { get; set; }
+    // Foreign Key to RoomParticipant(Id)
+    public int InitiatorId { get; set; }
 
-    public List<User> ListOfReceivers { get; set; }
+    public RoomParticipant Initiator { get; set; } = null!;
 
-    public CallStatus? Status { get; set; }
+    // Collection Navigation Property
+    public ICollection<CallParticipant> CallParticipants { get; set; } = new HashSet<CallParticipant>();
 
-    public DateTime? StartedAt { get; set; }
+    public CallStatus Status { get; set; } = CallStatus.Connecting;
 
-    public DateTime? EndedAt { get; set; }
+    public DateTime StartedAt { get; set; }
+
+    public DateTime EndedAt { get; set; }
     
     
 }

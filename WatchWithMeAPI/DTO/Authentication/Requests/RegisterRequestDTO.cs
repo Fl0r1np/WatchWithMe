@@ -2,7 +2,7 @@
 
 namespace WatchWithMeAPI.DTO
 {
-    public class RegisterDTO
+    public class RegisterRequestDTO
     {
         [Required]
         public string Username { get; set; } 

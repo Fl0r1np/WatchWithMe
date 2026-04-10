@@ -1,105 +1,15 @@
 import { AuthService } from '@services/auth-service/auth-service';
+import { UserService } from '@app/services/user-service/user-service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '@environments/environment.development';
+import { ApiEndpoints } from '@app/models/api-endpoints';
 
 @Component({
   selector: 'app-login-component',
   imports: [RouterLink, ReactiveFormsModule],
-  template: `
-    <div class="login-page">
-      <div class="login-card">
-        <h1 class="login-card-title">Login</h1>
-
-        <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-          
-          <div class="form-group">
-            <label for="email" class="form-label">Email</label>
-            <input 
-              type="email" 
-              id="email" 
-              formControlName="email"
-              class="form-input" 
-              [class.input-error]="isInvalid('email')"
-              placeholder="Enter your email">
-            
-            @if (isInvalid('email')) {
-              <div class="error-text">
-                @if (loginForm.get('email')?.hasError('required')) {
-                  <span>Email is required.</span>
-                }
-                @if (loginForm.get('email')?.hasError('email') && !loginForm.get('email')?.hasError('required')) {
-                  <span>Please enter a valid email address.</span>
-                }
-              </div>
-            }
-          </div>
-
-          <div class="form-group">
-            <div class="form-label-group">
-              <label for="password" class="form-label">Password</label>
-              <a routerLink="/forgot-password" class="forgot-link">Forgot password?</a>
-            </div>
-            
-            <div class="password-wrapper">
-              <input 
-                [type]="isPasswordHidden ? 'password' : 'text'" 
-                id="password" 
-                formControlName="password"
-                class="form-input" 
-                [class.input-error]="isInvalid('password')"
-                placeholder="Enter your password">
-                
-              <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
-                {{ isPasswordHidden ? 'Show' : 'Hide' }}
-              </button>
-            </div>
-
-            @if (isInvalid('password')) {
-              <div class="error-text">
-                @if (loginForm.get('password')?.hasError('required')) {
-                  <span>Password is required.</span>
-                }
-                @if( loginForm.get('password')?.hasError('minlength') && !loginForm.get('password')?.hasError('required')) {
-                  <span>Password must be at least 8 characters long.</span>
-                }
-              </div>
-            }
-          </div>
-
-          <button type="submit" class="btn btn--primary btn--full">Login</button>
-
-          <div class="form-footer">
-            <span class="options-text">Don't have an account? 
-              <a routerLink="/register" class="text-link">Sign up</a>
-            </span>
-          </div>
-        </form>
-
-        <div class="divider">
-          <span class="divider-line"></span>
-          <span class="divider-text">OR</span>
-          <span class="divider-line"></span>
-        </div>
-
-        <div class="social-login">
-          <button type="button" class="btn btn--google btn--full" (click)="loginWithGoogle()">
-            <img src="/assets/icons/google-icon.svg" alt="Google Logo" class="google-icon">
-            Continue with Google
-          </button>
-        </div>
-
-        @if (serverErrorMessage) {
-          <div class="global-error-box">
-            {{ serverErrorMessage }}
-          </div>
-        }
-
-      </div>
-    </div>
-  `,
+  templateUrl: './login-component.html',
   styleUrl: './login-component.css',
 })
 export class LoginComponent {
@@ -119,10 +29,14 @@ export class LoginComponent {
     password: new FormControl('', [Validators.required, Validators.minLength(8)])
   });
 
-  // Backend API URL
-  private apiUrl: string = environment.apiURL;
-
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient, 
+    private route: ActivatedRoute, 
+    private router: Router, 
+    private cdr: ChangeDetectorRef, 
+    private authService: AuthService,
+    private userService: UserService
+  ) {}
 
   // Checking if there is a query parameter indicating a error from the backend
   ngOnInit(): void {
@@ -188,7 +102,7 @@ export class LoginComponent {
        };
 
         // Send a POST request to the new backend endpoint
-      this.http.post(`${this.apiUrl}/api/auth/login`, loginData)
+      this.http.post(`${ApiEndpoints.login}`, loginData)
         .subscribe({
           next: (response: any) => {
 
@@ -197,8 +111,8 @@ export class LoginComponent {
             // Setting the token
             this.authService.saveToken(response.accessToken);
 
-            // Redirecting to the dashboard
-            this.router.navigate(['/dashboard']);
+            // Redirecting to the main page
+            this.router.navigate(['/']);
 
           },
           error: (err) => {
@@ -233,7 +147,7 @@ export class LoginComponent {
   }
 
   loginWithGoogle(): void {
-    window.location.href = `${this.apiUrl}/api/auth/login-google?provider=Google`;
+    window.location.href = `${ApiEndpoints.loginGoogle}?provider=Google`;
   }
 
 }

@@ -1,79 +1,97 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { environment } from '@environments/environment';
 import { AuthService } from '@services/auth-service/auth-service';
+import { UserService } from '@services/user-service/user-service';
+import { AsyncPipe } from '@angular/common';
+import { User } from '@app/models/user';
+import { Observable } from 'rxjs';
+import { ApiEndpoints } from '@app/models/api-endpoints';
+import { UserAccountUtils } from '@app/utils/UserAccountUtils';
+import { UserStatus } from '@app/models/user-status';
+import { AssetsPaths } from '@app/models/assets-paths';
 
 @Component({
   selector: 'app-header-component',
-  imports: [RouterLink],
-  template: `
-    <header class="main-header">
-      
-    <div class="main-header-brand" routerLink="/">
-        <img src="/assets/brand/logo.png" alt="Logo WatchWithMe" class="main-header-logo">
-        <h1 class="main-header-title">Watch <br> With Me</h1>
-      </div>
-
-      <div class="main-header-actions">
-        
-        @if (this.authService.isAuthenticated()){
-          
-          <div class="user-menu">
-
-            <div class="user-menu-trigger">
-              <img src="" alt="User Avatar" class="user-menu-avatar">
-              <div class="user-menu-info">
-                <span class="user-menu-name">{{username}}</span>
-                <span class="user-menu-status">Status</span>
-              </div>
-            </div>
-
-            <div class="user-menu-dropdown">
-              <ul class="user-menu-list">
-                <li class="user-menu-item"><a href="">Settings</a></li>
-                <li class="user-menu-item"><a href="">New Room</a></li>
-                <div class="container-notifications">
-                  <span>Notifications</span>
-                </div>
-                <li class="user-menu-item"><button (click)="logout()" class="logout-button">Logout</button></li>
-                
-              </ul>
-            </div>
-
-          </div>
-
-        }
-        @else{
-
-          <a routerLink="/login" class="login-button">Login</a>
-
-        }
-
-      </div>
-
-    </header>
-  `,
+  imports: [RouterLink, AsyncPipe],
+  templateUrl: './header-component.html',
   styleUrl: './header-component.css',
 })
 export class HeaderComponent implements OnInit {
 
-  username: string = 'User';
+  // Observable for user data
+  currentUser$: Observable<User>;
 
-  constructor(public authService: AuthService) {}
+  // Active Tab State for the Inbox
+  activeInboxTab: 'notifications' | 'invites' = 'notifications';
+
+  constructor(
+    public authService: AuthService, 
+    private http: HttpClient, 
+    private cdr: ChangeDetectorRef, 
+    private userService: UserService
+  ) {
+     // We inject the service and grab the observable
+    this.currentUser$ = this.userService.currentUser$;
+  }
 
   ngOnInit(): void {
 
-    // Unpack the token to get the user info
-    var tokenPayload = this.authService.getDecodedToken();
+    // Load the current user data when the component initializes
+    this.loadCurrentUser();
 
-    // Setting the user info
-    if( tokenPayload ){
-      this.username = tokenPayload.given_name || 'User';
-    }
+  }
+
+  loadCurrentUser() {
+
+    // Gret the token from the AuthService
+    const token = this.authService.getToken();
+
+    // Create headers with the token
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    // Try to get the current user data from the backend
+    this.http.get<User>(`${ApiEndpoints.getUserInfo}`, { headers }).subscribe({
+      next: (userData) => {
+
+        // Set the user data in the UserService
+        this.userService.updateUser(userData);
+
+      },
+      error: (err) => {
+        console.error('Error fetching current user data:', err);
+      } 
+    });
 
   }
 
   logout() {
     this.authService.logout();
+  }
+
+  // Method to switch between states of Inbox
+  switchInboxTab(tab: 'notifications' | 'invites'): void {
+    this.activeInboxTab = tab;
+  }
+
+  // Method to get the Profile Picture for the connected user
+  getProfilePicture(filename: string | null | undefined): string {
+
+    if (!filename) {
+      return AssetsPaths.avatars + 'avatar-default.png';
+    }
+
+    return AssetsPaths.avatars + filename;
+
+  }
+
+  convertDisplayStatusToString(status: UserStatus): string {
+
+    return UserAccountUtils.convertDisplayStatusToString(status);
+    
   }
 
 }

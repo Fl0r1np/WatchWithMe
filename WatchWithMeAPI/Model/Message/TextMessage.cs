@@ -2,7 +2,7 @@
 
 public class TextMessage : Message
 {
-    public string? Content { get; set; }
+    public string Content { get; set; } = null!;
     
     public override void markAsRead()
     {

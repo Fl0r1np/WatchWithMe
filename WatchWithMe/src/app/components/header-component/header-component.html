@@ -1,0 +1,81 @@
+<header class="main-header">
+      
+    <div class="main-header-brand" routerLink="/">
+        <img src="/assets/brand/logo.png" alt="Logo WatchWithMe" class="main-header-logo">
+        <h1 class="main-header-title">Watch <br> With Me</h1>
+      </div>
+
+      <div class="main-header-actions">
+        
+        @if (this.authService.isAuthenticated()){
+
+          <div class="inbox-menu-trigger">
+            <span class="inbox-menu-notification">0</span>
+            <img src="/assets/icons/inbox-icon.png" alt="Inbox Icon" class="inbox-menu-icon">
+          </div>
+          
+          <div class="inbox-menu-dropdown">
+              
+            <div class="inbox-menu-tabswipe">
+
+              <button
+                class="inbox-tabswipe-tab"
+                [class.tabswipe-active]="activeInboxTab === 'notifications'"
+                (click)="switchInboxTab('notifications')">
+                <img src="assets/icons/notifications-icon.png" alt="Notifications">
+              </button>
+              <button 
+                class="inbox-tabswipe-tab"
+                [class.tabswipe-active]="activeInboxTab === 'invites'"
+                (click)="switchInboxTab('invites')">
+                <img src="assets/icons/invites-icon.png" alt="Invites">
+              </button>
+            
+            </div>
+            
+            <div class="inbox-tabswipe-content">
+              
+            @if (activeInboxTab === 'notifications'){
+
+              <div class="inbox-content-tab">
+                <span class="inbox-empty">No new notifications</span>
+              </div>
+            }
+            @else {
+              <div class="inbox-content-tab">
+                <span class="inbox-empty">No new invites</span>
+              </div>
+            }
+            </div>
+
+          </div>
+
+          <div class="user-menu-trigger">
+            @if ( currentUser$ | async; as user ) {
+              <img [src]="getProfilePicture(user.profilePicture)" alt="User Avatar" class="user-menu-avatar">
+              <div class="user-menu-info">
+                <span class="user-menu-name">{{user.username}}</span>
+                <span class="user-menu-status">{{ convertDisplayStatusToString(user.displayStatus)}}</span>
+              </div>
+            }
+          </div>
+
+           <div class="user-menu-dropdown">
+              <ul class="user-menu-list">
+                <li class="user-menu-item"><a href="/dashboard">Settings</a></li>
+                <li class="user-menu-item"><a href="">New Room</a></li>
+                <li class="user-menu-item"><button (click)="logout()" class="logout-button">Logout</button></li>
+                
+              </ul>
+            </div>
+
+        }
+        @else{
+
+          <a routerLink="/login" class="login-button">Login</a>
+
+        }
+
+      </div>
+
+    </header>

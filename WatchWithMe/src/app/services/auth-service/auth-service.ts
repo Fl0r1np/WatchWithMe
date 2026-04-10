@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
+import { UserService } from '../user-service/user-service';
+import { UserStatus } from '@app/models/user-status';
 
 @Injectable({
   providedIn: 'root',
@@ -8,9 +10,19 @@ export class AuthService {
   
   private readonly TOKEN_KEY = 'auth_token';
 
+  constructor(
+    private userService: UserService
+  ){}
+
   // Save token to local storage
   saveToken(token: string): void {
+
+    // Save the token
     localStorage.setItem(this.TOKEN_KEY, token);
+
+    // Change user display status
+    this.userService.updateUserDisplayStatus(null, UserStatus.Online);
+
   }
 
   // Get token from local storage
@@ -60,7 +72,13 @@ export class AuthService {
 
   // Logout
   logout(): void {
+
+    // Update the user display status
+    this.userService.updateUserDisplayStatus(null, UserStatus.Offline);
+
+    // Removing the token from local storage
     localStorage.removeItem(this.TOKEN_KEY);
+
   }
 
 

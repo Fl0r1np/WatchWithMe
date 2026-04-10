@@ -1,3 +1,6 @@
+// Variable containing the main endpoints info
 export const environment = {
-    apiURL: 'https://localhost:7051'
+    
+    apiDomain: 'https://localhost:7051',
+    
 };

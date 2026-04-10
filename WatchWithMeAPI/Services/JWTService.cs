@@ -72,7 +72,7 @@ namespace WatchWithMeAPI.Services
         /// <returns>
         /// Returns an LoginResponseDTO containing the JWT token and additional info
         /// </returns>
-        public LoginResponseDTO GenerateToken(User user)
+        public LoginResponseDTO GenerateToken(User user, AuthMethod authMethod = AuthMethod.Basic)
         {
             
             // Get the necessary data from the configuration
@@ -87,7 +87,10 @@ namespace WatchWithMeAPI.Services
             {
                 Subject = new ClaimsIdentity(new[] {
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                    new Claim(JwtRegisteredClaimNames.GivenName, user.UserName)
+                    new Claim(JwtRegisteredClaimNames.GivenName, user.UserName),
+                    new Claim(JwtRegisteredClaimNames.Picture, user.ProfilePicture),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Status.ToString())
+                    
                 }),
                 Expires = tokenExpiryTimeStamp,
                 Issuer = issuer,
