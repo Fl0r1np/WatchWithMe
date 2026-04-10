@@ -1,8 +1,7 @@
-import { Component, LOCALE_ID, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@services/auth-service/auth-service';  
 import { ReactiveFormsModule, FormGroup, FormControl, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { environment } from '@environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '@app/models/user';
 import { UserStatus } from '@app/models/user-status';
@@ -90,6 +89,14 @@ export class DashboardComponent implements OnInit {
     Basic: NotificationType.Basic,
     Invitations: NotificationType.Invitations
   };
+
+  // Shared modal error message
+  modalErrorMessage: string | null = null;
+
+  // Password visibility states for the New Password modals
+  isCurrentPasswordHidden: boolean = true;
+  isNewPasswordHidden: boolean = true;
+  isConfirmPasswordHidden: boolean = true;
 
   // Reactive forms
   usernameForm = new FormGroup({
@@ -229,10 +236,30 @@ export class DashboardComponent implements OnInit {
     this.closeCurrentTab();
   }
 
-  // Modals logic 
+  // Validation helper
+  isInvalid(form: FormGroup, controlName: string): boolean {
+    const control = form.get(controlName);
+    return !!(control && control.invalid && (control.touched || control.dirty));
+  }
+
+  // Methods that togles show/unshow passwords
+  toggleCurrentPassword(): void {
+    this.isCurrentPasswordHidden = !this.isCurrentPasswordHidden;
+  }
+
+  toggleNewPassword(): void {
+    this.isNewPasswordHidden = !this.isNewPasswordHidden;
+  }
+
+  toggleConfirmPassword(): void {
+    this.isConfirmPasswordHidden = !this.isConfirmPasswordHidden;
+  }
+
+  // Modals logic
 
   openUsernameModal(): void {
     this.usernameForm.reset({ newUsername: this.currentUser.username });
+    this.modalErrorMessage = null;
     this.isUsernameModalOpen = true;
   }
 
@@ -265,14 +292,15 @@ export class DashboardComponent implements OnInit {
             this.userService.updateUser(this.currentUser);
 
             // Refresh the Front-End 
-            this.isUsernameModalOpen = false;
+            this.closeAllModals();
             this.loadUserData(); 
 
           },
           error: (err: any) => {
             // Inform the user about the error 
             console.error(err.error);
-            alert(err.error);
+            this.modalErrorMessage = err.error.errors.UserName;
+            this.cdr.detectChanges();
           }
         });
 
@@ -283,6 +311,7 @@ export class DashboardComponent implements OnInit {
 
   openEmailModal(): void {
     this.emailForm.reset({ newEmail: this.currentUser.email });
+    this.modalErrorMessage = null;
     this.isEmailModalOpen = true;
   }
 
@@ -313,7 +342,8 @@ export class DashboardComponent implements OnInit {
           error: (err: any) => {
             // Inform the user about the error 
             console.error(err.error);
-            alert(err.error);
+            this.modalErrorMessage = err.error.errors.Email;
+            this.cdr.detectChanges();
           }
         });
 
@@ -324,6 +354,7 @@ export class DashboardComponent implements OnInit {
 
   openProfilePicModal(): void {
     this.selectedProfilePicTemp = this.currentUser.profilePicture;
+    this.modalErrorMessage = null;
     this.isProfilePicModalOpen = true;
   }
 
@@ -354,19 +385,21 @@ export class DashboardComponent implements OnInit {
           this.userService.updateUser(this.currentUser);
 
           // Refresh the Front-End 
-          this.isProfilePicModalOpen = false;
+          this.closeAllModals();
           this.loadUserData();
         },
         error: (err: any) => {
           // Inform the user about the error 
           console.error(err.error);
-          alert(err.error);
+          this.modalErrorMessage = err.error.errors.ProfilePicture;
+          this.cdr.detectChanges();
         }
       });
   }
 
   openStatusModal(): void {
     this.selectedStatusTemp = this.currentUser.status;
+    this.modalErrorMessage = null;
     this.isStatusModalOpen = true;
   }
 
@@ -397,13 +430,14 @@ export class DashboardComponent implements OnInit {
           this.userService.updateUser(this.currentUser);
 
           // Refresh the Front-End 
-          this.isStatusModalOpen = false;
+          this.closeAllModals();
           this.loadUserData();
         },
         error: (err: any) => {
           // Inform the user about the error 
           console.error(err.error);
-          alert(err.error);
+          this.modalErrorMessage = err.error.errors.Status;
+          this.cdr.detectChanges();
         }
       });
 
@@ -414,6 +448,10 @@ export class DashboardComponent implements OnInit {
 
   openPasswordModal(): void {
     this.passwordForm.reset();
+    this.modalErrorMessage = null;
+    this.isCurrentPasswordHidden = true;
+    this.isNewPasswordHidden = true;
+    this.isConfirmPasswordHidden = true;
     this.isPasswordModalOpen = true;
   }
 
@@ -442,13 +480,24 @@ export class DashboardComponent implements OnInit {
             console.log(response.message);  
 
             // Refresh the Front-End
-            this.isPasswordModalOpen = false;
+            this.closeAllModals();
             this.loadUserData();
           },
           error: (err: any) => {
             // Inform the user about the error 
             console.error(err);
-            alert(err.error.errors.CurrentPassword + "\n" + err.error.errors.NewPassword);
+            const currentPasswordError = err.error.errors.CurrentPassword ?? null;
+            const newPasswordError = err.error.errors.NewPassword ?? null;
+            const passwordUpdateError = err.error.errors.PasswordUpdate ?? null;
+            
+            if (currentPasswordError !== null && newPasswordError !== null){
+              this.modalErrorMessage = currentPasswordError + "\n" + newPasswordError;
+            }
+
+            if (passwordUpdateError !== null){
+              this.modalErrorMessage = passwordUpdateError;
+            }
+            this.cdr.detectChanges();
           }
         });
 
@@ -457,7 +506,8 @@ export class DashboardComponent implements OnInit {
 
       // Inform the user about the form errors
       console.error(this.passwordForm.errors);
-      alert('The passwords do not match.');
+      this.modalErrorMessage = "The passwords do not match.";
+      this.cdr.detectChanges();
       this.passwordForm.markAllAsTouched();
     }
   }
@@ -468,6 +518,7 @@ export class DashboardComponent implements OnInit {
     this.isPasswordModalOpen = false;
     this.isUsernameModalOpen = false;
     this.isEmailModalOpen = false;
+    this.modalErrorMessage = null;
   }
 
   closeCurrentTab(): void {

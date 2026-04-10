@@ -159,8 +159,24 @@
       <form class="modal-form" [formGroup]="usernameForm">
         <div class="form-group">
           <label class="form-label">New Username</label>
-          <input type="text" formControlName="newUsername" class="form-input" placeholder="Enter new username">
+          <input 
+            type="text"
+            formControlName="newUsername" 
+            class="form-input"
+            [class.input-error]="isInvalid(usernameForm, 'newUsername')" 
+            placeholder="Enter new username">
+            
+            @if (isInvalid(usernameForm, 'newUsername')) {
+            <span class="error-text">Username must be at least 6 characters.</span>
+            }
         </div>
+
+        @if (modalErrorMessage) {
+          <div class="global-error-box">
+            {{ modalErrorMessage }}
+          </div>
+        }
+
       </form>
       <div class="modal-actions">
         <button class="btn btn-secondary" (click)="closeAllModals()">Cancel</button>
@@ -177,8 +193,24 @@
       <form class="modal-form" [formGroup]="emailForm">
         <div class="form-group">
           <label class="form-label">New Email</label>
-          <input type="email" formControlName="newEmail" class="form-input" placeholder="Enter new email address">
+          <input 
+            type="email" 
+            formControlName="newEmail" 
+            class="form-input"
+            [class.input-error]="isInvalid(emailForm, 'newEmail')" 
+            placeholder="Enter new email address">
+
+            @if (isInvalid(emailForm, 'newEmail')) {
+              <span class="error-text">Please enter a valid email address.</span>
+            }
         </div>
+
+        @if (modalErrorMessage) {
+          <div class="global-error-box">
+            {{ modalErrorMessage }}
+          </div>
+        }
+
       </form>
       <div class="modal-actions">
         <button class="btn btn-secondary" (click)="closeAllModals()">Cancel</button>
@@ -225,6 +257,11 @@
           <span class="status-indicator private"></span> Private
         </div>
       </div>
+        @if (modalErrorMessage) {
+          <div class="global-error-box">
+            {{ modalErrorMessage }}
+          </div>
+        }
       <div class="modal-actions">
         <button class="btn btn-secondary" (click)="closeAllModals()">Cancel</button>
         <button class="btn btn-primary" (click)="saveStatus()">Save</button>
@@ -240,16 +277,73 @@
       <form class="modal-form" [formGroup]="passwordForm">
         <div class="form-group">
           <label class="form-label">Current Password</label>
-          <input type="password" formControlName="currentPassword" class="form-input" placeholder="Enter current password">
+          <div class="password-wrapper">
+            <input 
+              [type]="isCurrentPasswordHidden ? 'password' : 'text'" 
+              formControlName="currentPassword" 
+              class="form-input"
+              [class.input-error]="isInvalid(passwordForm, 'currentPassword')" 
+              placeholder="Enter current password"
+            >
+            
+            <button type="button" class="password-toggle" (click)="toggleCurrentPassword()">
+              {{ isCurrentPasswordHidden ? 'Show' : 'Hide' }}
+            </button>
+          
+            </div>
+
+            @if (isInvalid(passwordForm, 'currentPassword')) {
+              <span class="error-text">Current password must be atleast 8 characters long.</span>
+            }
+              
         </div>
         <div class="form-group">
           <label class="form-label">New Password</label>
-          <input type="password" formControlName="newPassword" class="form-input" placeholder="Enter new password">
+          <div class="password-wrapper">
+            <input 
+              [type]="isNewPasswordHidden ? 'password' : 'text'"
+              formControlName="newPassword" 
+              class="form-input" 
+              [class.input-error]="isInvalid(passwordForm, 'newPassword')"
+              placeholder="Enter new password"
+            >
+              
+            <button type="button" class="password-toggle" (click)="toggleNewPassword()">
+              {{ isNewPasswordHidden ? 'Show' : 'Hide' }}
+            </button>
+          </div>
+
+          @if (isInvalid(passwordForm, 'newPassword')) {
+            <span class="error-text">New password must be atleast 8 characters long.</span>
+          }  
         </div>
         <div class="form-group">
           <label class="form-label">Confirm New Password</label>
-          <input type="password" formControlName="confirmNewPassword" class="form-input" placeholder="Rewrite new password">
+          <div class="password-wrapper">
+            <input 
+              [type]="isConfirmPasswordHidden ? 'password' : 'text'"
+              formControlName="confirmNewPassword" 
+              class="form-input" 
+              [class.input-error]="isInvalid(passwordForm, 'confirmNewPassword')"
+              placeholder="Rewrite new password"
+            >
+
+            <button type="button" class="password-toggle" (click)="toggleConfirmPassword()">
+              {{ isConfirmPasswordHidden ? 'Show' : 'Hide' }}
+            </button>
+
+          </div>
+          
+          @if (isInvalid(passwordForm, 'confirmNewPassword')) {
+            <span class="error-text">The password do not match the new password.</span>
+          } 
+          
         </div>
+        @if (modalErrorMessage) {
+          <div class="global-error-box">
+            {{ modalErrorMessage }}
+          </div>
+        }
       </form>
       <div class="modal-actions">
         <button class="btn btn-secondary" (click)="closeAllModals()">Cancel</button>
