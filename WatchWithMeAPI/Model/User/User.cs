@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace WatchWithMeAPI.Model
 {
     public class User : IdentityUser
     {
         
+        [Required]
+        [MaxLength(255)]
         public string ProfilePicture { get; set; } = "avatar-default.png";
         public UserStatus Status { get; set; } = UserStatus.Public;
         
@@ -18,7 +21,7 @@ namespace WatchWithMeAPI.Model
 
 
         // Collection Navigation Property
-        // public ICollection<RoomParticipant> Participants { get; set; } = new HashSet<RoomParticipant>();
+        public ICollection<RoomParticipant> Participants { get; set; } = new HashSet<RoomParticipant>();
 
 
     }
