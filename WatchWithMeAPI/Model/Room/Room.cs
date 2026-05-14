@@ -32,7 +32,7 @@ public class Room
     public ICollection<RoomParticipant> RoomParticipants { get; set; } = new HashSet<RoomParticipant>();
     
     // Foreign Key to RoomParticipant(Id)
-    public int? ParticipantWithRoomControlId { get; set; } = -1;
+    public int? ParticipantWithRoomControlId { get; set; }
     
     [ForeignKey(nameof(ParticipantWithRoomControlId))]
     public RoomParticipant? ParticipantWithRoomControl { get; set; }
@@ -56,5 +56,13 @@ public class Room
     [Required]
     [MaxLength(100)]
     public string ContainerId { get; set; } = null!;
+
+    [Required]
+    [MaxLength(9)]
+    public string ViewerPassword { get; set; }
+
+    [Required]
+    [MaxLength(9)]
+    public string HostPassword { get; set; }
     
 }

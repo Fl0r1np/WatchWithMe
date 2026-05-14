@@ -86,11 +86,11 @@ namespace WatchWithMeAPI.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] {
+                    new Claim(JwtRegisteredClaimNames.NameId, user.Id),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
                     new Claim(JwtRegisteredClaimNames.GivenName, user.UserName),
                     new Claim(JwtRegisteredClaimNames.Picture, user.ProfilePicture),
                     new Claim(JwtRegisteredClaimNames.Sub, user.Status.ToString())
-                    
                 }),
                 Expires = tokenExpiryTimeStamp,
                 Issuer = issuer,

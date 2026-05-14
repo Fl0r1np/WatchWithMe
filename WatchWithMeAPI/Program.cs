@@ -6,9 +6,14 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Polly;
 using WatchWithMeAPI.DTO;
+using WatchWithMeAPI.DTOs.Room.Requests;
+using WatchWithMeAPI.Hubs;
 using WatchWithMeAPI.Model;
 using WatchWithMeAPI.Services;
+using WatchWithMeAPI.Services.NekoService;
 using WatchWithMeAPI.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -105,7 +110,7 @@ builder.Services.AddAuthentication(options =>
     })
     .AddJwtBearer(options => { // Adds to support for JWT 
 
-        options.MapInboundClaims = false; // Tells microsoft to not auto-translate our jwt claims
+        options.MapInboundClaims = false; // Tells Microsoft to not auto-translate our jwt claims
         options.RequireHttpsMetadata = false;
         options.SaveToken = true;
         
@@ -122,11 +127,35 @@ builder.Services.AddAuthentication(options =>
             ValidateIssuerSigningKey = true,
 
         };
+        
+        // Setup for WebSockets (SignalR)
+        options.Events = new JwtBearerEvents()
+        {
+            OnMessageReceived = context =>
+            {
+                // Get the JWT from the query string
+                var accessToken = context.Request.Query["access_token"];
+                
+                // Get the path that the user is trying to access 
+                var path = context.HttpContext.Request.Path;
+                
+                // If it has the token and the path is SignalR Hub, use the token
+                if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs/room"))
+                {
+                    context.Token = accessToken;
+                }
+
+                return Task.CompletedTask;
+            }
+        };
 
     });
 
 builder.Services.AddAuthorization();
+
+// Inject the services
 builder.Services.AddScoped<JWTService>();
+builder.Services.AddScoped<IRoomService, RoomService>();
 
 // Inject the custom validators
 builder.Services.AddScoped<IValidator<ProfilePictureUpdateRequestDTO>, ProfilePictureUpdateRequestValidator>();
@@ -136,6 +165,14 @@ builder.Services.AddScoped<IValidator<UserNameUpdateRequestDTO>, UserNameUpdateR
 builder.Services.AddScoped<IValidator<StatusUpdateRequestDTO>, StatusUpdateRequestValidator>();
 builder.Services.AddScoped<IValidator<DisplayStatusUpdateRequestDTO>, DisplayStatusUpdateRequestValidator>();
 builder.Services.AddScoped<IValidator<NotificationOptionsUpdateRequestDTO>, NotificationOptionsRequestValidator>();
+builder.Services.AddScoped<IValidator<CreateNewRoomRequestDTO>, CreateNewRoomRequestValidator>();
+builder.Services.AddScoped<IValidator<JoinRoomWithShareCodeRequestDTO>, JoinRoomWithShareCodeRequestValidator>();
+
+// Turn the SignalR engine on and expose the End points
+builder.Services.AddSignalR();
+
+// Service for n.eko
+builder.Services.AddScoped<INekoService, NekoService>();
 
 // Ignore SSL Certificate Validation
 var httpClientHandler = new HttpClientHandler();
@@ -172,5 +209,8 @@ app.UseStaticFiles();
 
 // Routes the request to your controller classes
 app.MapControllers();
+
+// Register and Map the Hubs
+app.MapHub<RoomHub>("hubs/room");
 
 app.Run();
