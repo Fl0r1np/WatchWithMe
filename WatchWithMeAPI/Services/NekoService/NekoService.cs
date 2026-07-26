@@ -49,6 +49,24 @@ public class NekoService : INekoService
         try
         {
         
+            // Calculate the dynamic 100-port block for this specific room
+            int baseUdpPort = await GetNextAvailableUdpPortBlockAsync();
+            int maxUdpPort = baseUdpPort + 99;
+            
+            // Set up the port bindings
+            var portBindings = new Dictionary<string, IList<PortBinding>>
+            {
+                // TCP Port for the Web UI (randomly assigned by Docker)
+                { "8080/tcp", new List<PortBinding> { new PortBinding { HostPort = "" } } }
+            };
+            
+            // Add the UDP ports for WebRTC Video Streaming
+            for (int port = baseUdpPort; port <= maxUdpPort; port++)
+            {
+                portBindings.Add($"{port}/udp", new List<PortBinding> { new PortBinding { HostPort = port.ToString() } });
+            }
+            
+            
             // Define the container parameters 
             var createParams = new CreateContainerParameters
             {
@@ -59,17 +77,13 @@ public class NekoService : INekoService
                     $"NEKO_PASSWORD={viewerPassword}",
                     $"NEKO_PASSWORD_ADMIN={hostPassword}",
                     "NEKO_SCREEN=1280x720@30", // Set a standard resolution
-                    "NEKO_EPR=52000-52099" // WebRTC UDP Port range
+                    $"NEKO_EPR={baseUdpPort}-{maxUdpPort}", // WebRTC UDP Port range
+                    "NEKO_NAT1TO1=127.0.0.1"
                 },
                 HostConfig = new HostConfig
                 {
                     // Map n.eko's internal port 8080 to a random available port on your server
-                    PortBindings = new Dictionary<string, IList<PortBinding>>
-                    {
-                        {
-                            "8080/tcp", new List<PortBinding> { new PortBinding { HostPort = "" } } // Empty string tells Docker to pick a random open port
-                        }
-                    },
+                    PortBindings = portBindings,
                     AutoRemove = true // Automatically deletes the container if it crashes
                 }
             };
@@ -131,6 +145,54 @@ public class NekoService : INekoService
         {
             _logger.LogError(e, "Failed to stop n.eko container {ContainerId}", containerId);
         }
+        
+    }
+
+
+    /// <summary>
+    /// Method that returns the next available UDP port block
+    /// </summary>
+    /// <returns>
+    /// Returns an integer containing the next available UDP port block
+    /// </returns>
+    private async Task<int> GetNextAvailableUdpPortBlockAsync()
+    {
+        
+        // Get a list of all currently running docker containers
+        var containers = await _dockerClient.Containers.ListContainersAsync(new ContainersListParameters{All = true});
+
+        // Define our max port 
+        var highestUsedPort = 51900;
+
+        // Loop through the containers to find the highest used port
+        foreach (var container in containers)
+        {
+            if (container.Ports == null) continue;
+            
+            foreach (var port in container.Ports)
+            {
+                // Check if it's a UDP port in our WebRTC range
+                if (port.Type == "udp" && port.PublicPort >= 52000 && port.PublicPort <= 65000)
+                {
+                    if (port.PublicPort > highestUsedPort)
+                    {
+                        highestUsedPort = port.PublicPort;
+                    }
+                }
+            }
+            
+        }
+        
+        // Calculate the next available UDP port block
+        int nextBlockBase = highestUsedPort - (highestUsedPort % 100) + 100;
+    
+        // Safety check: Wrap around if we somehow hit the max port limit
+        if (nextBlockBase > 65000) 
+        {
+            return 52000;
+        }
+
+        return nextBlockBase;
         
     }
 }

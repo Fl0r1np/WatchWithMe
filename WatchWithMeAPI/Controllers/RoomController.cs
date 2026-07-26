@@ -94,6 +94,33 @@ public class RoomController : ControllerBase
 
     }
 
+    [HttpDelete("{roomId:int}")]
+    public async Task<IActionResult> CloseRoom([FromRoute] int roomId)
+    {
+        // Get the currently logged-in user's email from JWT
+        var userEmail = User.FindFirstValue(JwtRegisteredClaimNames.Email);
+        var user = await _userManager.FindByEmailAsync(userEmail);
+        
+        // Check if the user exists
+        if (user == null)
+        {
+            return NotFound(USER_NOT_FOUND);
+        }
+        
+        // Try to close the room
+        try
+        {
+            await _roomService.TerminateRoomAsync(roomId);
+            return Ok(
+                new { message = "Room closed successfully." }
+                );
+        }
+        catch (Exception e)
+        {
+            return Problem(e.Message);
+        }
+    }
+
     [HttpPost("join-room-with-share-code")]
     public async Task<ActionResult<RoomInfoResponseDTO>> JoinRoomWithShareCode([FromBody] JoinRoomWithShareCodeRequestDTO request)
     {

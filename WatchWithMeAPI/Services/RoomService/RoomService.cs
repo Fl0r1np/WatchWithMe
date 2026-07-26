@@ -130,6 +130,46 @@ public class RoomService : IRoomService
     }
 
     /// <summary>
+    /// Method to terminate a room
+    /// </summary>
+    /// <param name="roomId">
+    /// The id of the room to terminate
+    /// </param>
+    /// <returns></returns>
+    /// <exception cref="Exception">
+    /// If the room with the given id does not exist or there is a problem terminating the room
+    /// </exception>
+    public async Task TerminateRoomAsync(int roomId)
+    {
+        // Try to terminate the room
+        try
+        {
+            
+            // Check if the room exists
+            var room = await _context.Rooms.FindAsync(roomId);
+
+            if (room == null)
+            {
+                _logger.LogWarning("Failed to terminate room with id = {RoomId}. Room not found.", roomId);
+                throw new Exception("The room with the given id does not exist.");
+            }
+
+            // Terminate the room
+            await _nekoService.StopAndRemoveContainerAsync(room.ContainerId);
+
+            // Update the status of the room
+            room.Status = RoomStatus.Closed;
+            await _context.SaveChangesAsync();
+
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An unexpected error occurred in TerminateRoomAsync");
+            throw; 
+        }
+    }
+
+    /// <summary>
     /// Method to join a room with a specific share code
     /// </summary>
     /// <param name="user">
